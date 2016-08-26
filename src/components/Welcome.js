@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const welcome = ({ name }) => 
+const welcome = ({ name }) =>
   <Text style={styles.welcome}>
     Welcome to React Native, {name}!!!
   </Text>;

@@ -1,10 +1,10 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import Welcome from '../components/Welcome.js';
+import Welcome from '../components/Welcome';
 
 const styles = StyleSheet.create({
   container: {
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 
 class AppPage extends Component {
 
-  getContainerStyle = (name) => <Welcome name={name + '123'}/>;
+  getContainerStyle = (name) => <Welcome name={`${name} 123`} />;
 
   render() {
     return (

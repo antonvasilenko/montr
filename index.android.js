@@ -1,8 +1,7 @@
 /**
  * @flow
  */
-import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
-import AppPage from './src/pages/AppPage.js';
+import AppPage from './src/pages/AppPage';
 
 AppRegistry.registerComponent('montr', () => AppPage);

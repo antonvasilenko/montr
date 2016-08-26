@@ -23,5 +23,7 @@
     "no-unused-expressions": 0,
     "global-require": 0,
     "react/jsx-first-prop-new-line": 0,
+    "linebreak-style": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js"] }]
   }
 }
