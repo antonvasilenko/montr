@@ -6,7 +6,16 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "babel-core": "^6.7.4",
+    "babel-eslint": "^6.1.2",
+    "babel-plugin-react-transform": "^2.0.2",
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
+    "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-preset-react-native": "^1.9.0",
+    "babel-register": "^6.9.0",
     "react": "15.3.1",
-    "react-native": "0.32.0"
+    "react-native": "0.32.0",
+    "eslint": "^3.3.1",
+    "eslint-config-airbnb": "^10.0.1"
   }
 }

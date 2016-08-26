@@ -2,48 +2,7 @@
  * @flow
  */
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
-import Welcome from './src/pages/AppPage.js';
+import { AppRegistry } from 'react-native';
+import AppPage from './src/pages/AppPage.js';
 
-class montr extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Welcome name="Anton" />
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
-
-AppRegistry.registerComponent('montr', () => montr);
+AppRegistry.registerComponent('montr', () => AppPage);
