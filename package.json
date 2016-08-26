@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start"
+    "lint": "./node_modules/.bin/eslint src/**",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "a:devices": "adb devices"
   },
   "dependencies": {
     "babel-core": "^6.7.4",
@@ -17,5 +19,10 @@
     "react-native": "0.32.0",
     "eslint": "^3.3.1",
     "eslint-config-airbnb": "^10.0.1"
+  },
+  "devDependencies": {
+    "eslint-plugin-import": "^1.14.0",
+    "eslint-plugin-jsx-a11y": "^2.1.0",
+    "eslint-plugin-react": "^6.1.2"
   }
 }

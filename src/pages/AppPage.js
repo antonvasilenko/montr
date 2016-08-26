@@ -4,7 +4,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import Welcome from '../components/Welcome.jsx';
+import Welcome from '../components/Welcome.js';
 
 const styles = StyleSheet.create({
   container: {

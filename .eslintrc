@@ -1,0 +1,27 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "ecmaFeatures": {
+    "jsx": true,
+    "flow": true
+  },
+  "extends": "airbnb",
+  "globals": [
+      "describe",
+      "it",
+      "fetch",
+      "navigator",
+      "__DEV__",
+      "XMLHttpRequest",
+      "FormData"
+    ],
+  "rules": {
+    "no-unused-expressions": 0,
+    "global-require": 0,
+    "react/jsx-first-prop-new-line": 0,
+  }
+}
