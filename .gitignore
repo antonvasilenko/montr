@@ -31,3 +31,4 @@ jspm_packages
 .npm
 
 android/app/build
+/android/.gradle
