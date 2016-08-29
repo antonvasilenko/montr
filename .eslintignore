@@ -1,0 +1,9 @@
+**/*.less
+**/*.svg
+**/*.png
+**/*.jpg
+**/*.json
+**/*.gif
+node-modules
+index.android.js
+index.android.js
