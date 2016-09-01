@@ -2,10 +2,17 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
-  Image, View,
+  Image,
+  View,
+  Navigator,
+  DrawerLayoutAndroid,
 } from 'react-native';
 import { Button, Card } from 'react-native-material-design';
+import Toolbar from './components/Toolbar';
 import imageWelcome from './img/welcome.jpg';
+
+import Navigate from './utils/Navigate';
+import NavScene from './scenes/NavScene';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,12 +31,32 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  scene: {
+    flex: 1,
+    marginTop: 56,
+  },
 });
 
 class AppPage extends Component {
 
   state = {
-    page: 'material',
+    page: 'drawer',
+    route: 'services',
+  }
+
+  onSceneSelected = (name) => {
+    this.setState({ route: name }, () => {
+      this.drawer.closeDrawer();
+      this.navigator.to(name);
+    });
+  }
+
+  setNavigator = (navi) => {
+    this.navigator = new Navigate(navi);
+  }
+
+  setDrawer = drawer => {
+    this.drawer = drawer;
   }
 
   renderHeader = (name) => (<Text>{name}</Text>);
@@ -53,19 +80,36 @@ class AppPage extends Component {
     );
   }
 
-  renderDefault() {
+  renderDrawer() {
     return (
-      <View style={styles.container}>
-        {this.renderHeader('Anton')}
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Button />
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+      <DrawerLayoutAndroid
+        drawerWidth={300}
+        drawerPosition={DrawerLayoutAndroid.positions.Left}
+        renderNavigationView={() =>
+          <NavScene
+            onSceneSelected={this.onSceneSelected}
+            route={this.state.route}
+          />
+        }
+        ref={this.setDrawer}
+      >
+        <Navigator
+          initialRoute={Navigate.getInitialRoute()}
+          navigationBar={<Toolbar
+            title="Test"
+            onIconPress={() => this.drawer.openDrawer()}
+          />}
+          configureScene={() => Navigator.SceneConfigs.FadeAndroid}
+          ref={this.setNavigator}
+          renderScene={route =>
+            <View
+              style={styles.scene}
+              showsVerticalScrollIndicator={false}
+            >
+              <route.component title={route.title} path={route.path} {...route.props} />
+            </View>}
+        />
+      </DrawerLayoutAndroid>
     );
   }
 
@@ -73,8 +117,10 @@ class AppPage extends Component {
     switch (this.state.page) {
       case 'material':
         return this.renderMaterial();
+      case 'drawer':
+        return this.renderDrawer();
       default:
-        return this.renderDefault();
+        return (<Text>default</Text>);
     }
   }
 }

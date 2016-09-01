@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, Image } from 'react-native';
-import { Subheader, List, Icon, Avatar, IconToggle } from 'react-native-material-design';
+import { Subheader, Icon, Avatar, IconToggle } from 'react-native-material-design';
+import ListItem from '../components/ListItem';
 
 const data = {
   text: ['Inbox', 'Sent Items'],
@@ -19,47 +20,21 @@ const data = {
   ],
 };
 
-export default class ListExample extends Component { // eslint-disable-line
+class ListExample extends Component { // eslint-disable-line
 
   render() {
     return (
       <ScrollView style={{ backgroundColor: '#fff' }}>
         <Subheader text="Basic Text Example" />
-        { data.text.map((text, i) => (
-          <List
+        {data.text.map((text, i) => (
+          <ListItem
             key={i}
             primaryText={text}
           />
-        ))}
-        { data['text-secondary'].map((list, i) => (
-          <List
-            key={i}
-            primaryText={list.primaryText}
-            secondaryText={list.secondaryText}
-          />
-        ))}
-        <Subheader text="Left Avatar" />
-        { data['avatar-text'].map((item, i) => (
-          <List
-            key={i}
-            primaryText={item.primaryText}
-            secondaryText={item.secondaryText}
-            leftAvatar={<Avatar image={<Image source={{ uri: item.avatar }} />} />}
-          />
-        ))}
-        <List
-          leftComponent={
-            <IconToggle color="paperGrey900">
-              <Icon
-                name="business"
-                color="paperGrey900"
-              />
-            </IconToggle>
-          }
-          primaryText="Some component"
-        />
+        ))}        
       </ScrollView>
     );
   }
 }
 
+export default ListExample;
