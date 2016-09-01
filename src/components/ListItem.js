@@ -13,9 +13,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   leftIcon: {
-    width: 56,
+    width: 50,
     position: 'relative',
-    top: -6,
+    top: 0,
   },
   rightIcon: {
     paddingLeft: 16,

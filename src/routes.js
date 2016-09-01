@@ -9,6 +9,6 @@ export default {
   },
   hosts: {
     title: 'Hosts',
-    // component: HostsScene,
+    component: HostsScene,
   },
 };
