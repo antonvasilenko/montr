@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Toolbar as MaterialToolbar } from 'react-native-material-design';
-// import AppStore from '../stores/AppStore';
+import AppStore from '../stores/AppStore';
 
 export default class Toolbar extends Component {
 
@@ -11,18 +11,18 @@ export default class Toolbar extends Component {
   static propTypes = {
     onIconPress: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
+    issues: PropTypes.object,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      title: '%Title', // AppStore.getState().routeName,
-      theme: 'paperTeal', // AppStore.getState().theme,
-      counter: 0,
+      title: AppStore.getState().routeName,
+      theme: AppStore.getState().theme,
     };
   }
 
-  /* componentDidMount = () => {
+  componentDidMount() {
     AppStore.listen(this.handleAppStore);
   }
 
@@ -35,18 +35,30 @@ export default class Toolbar extends Component {
       title: store.routeName,
       theme: store.theme,
     });
-  } */
-
-  increment = () => {
-    this.setState({
-      counter: this.state.counter + 1,
-    });
   }
 
+  issuesAction = () => {
+    if (!this.props.issues || this.props.issues.count === 0) {
+      return undefined;
+    }
+    const icon = this.props.issues.type === 'error' ? 'error' : 'warning';
+    return {
+      icon,
+      badge: { value: this.props.issues.count, anumate: true },
+      onPress: this.context.navigator.to('services'),
+    };
+  }
+
+  renderActions = () => {
+    const actions = [];
+    const issues = this.issuesAction();
+    if (issues) actions.push(issues);
+    return actions;
+  }
 
   render() {
     const { navigator } = this.context;
-    const { theme, counter } = this.state;
+    const { theme } = this.state;
     const { onIconPress } = this.props;
 
     return (
@@ -55,11 +67,7 @@ export default class Toolbar extends Component {
         primary={theme}
         icon={navigator && navigator.isChild ? 'keyboard-backspace' : 'menu'}
         onIconPress={() => (navigator && navigator.isChild ? navigator.back() : onIconPress())}
-        actions={[{
-          icon: 'warning',
-          badge: { value: counter, animate: true },
-          onPress: this.increment,
-        }]}
+        actions={this.renderActions()}
         rightIconStyle={{
           margin: 10,
         }}

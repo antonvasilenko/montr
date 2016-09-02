@@ -5,7 +5,7 @@ import alt from './alt';
 class AppActions {
 
   updateTheme(name) {
-    StatusBarAndroid.setHexColor(COLOR[`${name}700`].color);
+    StatusBarAndroid.setHexColor(COLOR[`${name}500`].color);
     return name;
   }
 }

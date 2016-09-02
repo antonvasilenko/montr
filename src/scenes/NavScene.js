@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text, Image } from 'react-native';
 
 import { Avatar, Drawer, COLOR, TYPO } from 'react-native-material-design';
+import routes from '../routes';
 
 const styles = {
   header: {
@@ -45,22 +46,16 @@ export default class NavScene extends Component {
         </Drawer.Header>
 
         <Drawer.Section
-          items={[
-            {
-              icon: 'cloud-queue',
-              value: 'Services',
-              active: !route || route === 'services',
-              onPress: changeSceneCb('services'),
-              onLongPress: changeSceneCb('services'),
-            },
-            {
-              icon: 'computer',
-              value: 'Hosts',
-              active: !route || route === 'hosts',
-              onPress: changeSceneCb('hosts'),
-              onLongPress: changeSceneCb('hosts'),
-            },
-          ]}
+          items={Object
+            .keys(routes)
+            .map(r => ({
+              icon: routes[r].icon,
+              value: routes[r].title,
+              active: !route || route === r,
+              onPress: changeSceneCb(r),
+              onLongPress: changeSceneCb(r),
+            }))
+          }
         />
       </Drawer>
     );

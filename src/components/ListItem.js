@@ -79,6 +79,10 @@ export default class List extends Component {
     primaryColor: 'rgba(0,0,0,.87)',
   };
 
+  setNativeProps(nativeProps) {
+    this.refRoot.setNativeProps(nativeProps);
+  }
+
   /* eslint-disable */
   render() {
     const {
@@ -98,7 +102,10 @@ export default class List extends Component {
     } = this.props;
 
     return (
-      <View style={[styles.listContainer, { height: lines > 2 ? ((lines -1) * 16 + 56) : (secondaryText ? 72 : (leftAvatar || rightAvatar ) ? 56 : 48) }]}>
+      <View
+        ref={r => this.refRoot = r}
+        style={[styles.listContainer, { height: lines > 2 ? ((lines -1) * 16 + 56) : (secondaryText ? 72 : (leftAvatar || rightAvatar ) ? 56 : 48) }]}
+      >
         {leftIcon &&
           <TouchableWithoutFeedback onPress={onLeftIconClicked}>
             <View style={[styles.leftIcon, lines > 2 && { paddingTop: 16, alignSelf: 'flex-start' }]}>
