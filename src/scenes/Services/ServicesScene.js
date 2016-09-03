@@ -8,11 +8,11 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {
-  Subheader, Header, Icon, COLOR,
+  Subheader, COLOR,
 } from 'react-native-material-design';
 
-import ListItem from '../../components/ListItem';
-import BambooService from '../../services/BambooService';
+import Plan from './Plan';
+import MonitorService from '../../services/MonitorService';
 
 const styles = StyleSheet.create({
   divider: {
@@ -45,7 +45,7 @@ class ServicesScene extends Component {
 
   loadData = async () => {
     try {
-      const planMap = await BambooService.getGroupedPlans();
+      const planMap = await MonitorService.getGroupedPlans();
       if (!this.timer) return;
       this.setState({
         servicesDs: this.state.servicesDs.cloneWithRowsAndSections(planMap),
@@ -53,48 +53,17 @@ class ServicesScene extends Component {
     } catch (err) {
       console.warn(err);
     }
-  }
-
-  renderRowIcon = item => {
-    const icon = {
-      name: 'cloud',
-      color: 'paperBlueGrey300',
-    };
-    if (item.enabled) {
-      icon.name = 'cloud-done';
-      icon.color = 'paperLightGreenA700';
-    }
-    return (<Icon
-      name={icon.name}
-      color={icon.color}
-    />);
-  }
-
-  renderRowSummary = item => {
-    if (item.latestDeployment) {
-      return `int: #${item.latestDeployment.integration.planResultNumber} ` +
-        `prod: #${item.latestDeployment.production.planResultNumber}`;
-    }
-    if (item.latestResult) {
-      return `build-#${item.latestResult.buildNumber}`;
-    }
-    return 'no details :(';
-  }
-
-  renderServicesRow = (rowData, secId, rowId) =>
-    <ListItem
-      primaryText={rowData.name}
-      secondaryText={this.renderRowSummary(rowData)}
-      leftIcon={this.renderRowIcon(rowData)}
-    />;
+  } 
 
   render() {
     return (
       <ListView style={{ backgroundColor: '#fff' }}
         enableEmptySections
         dataSource={this.state.servicesDs}
-        renderRow={this.renderServicesRow}
-        renderSeparator={() => <View style={styles.divider} />}
+        renderRow={(rowData, secId) =>
+          <Plan data={rowData} />}
+        renderSeparator={(secId, rowId) =>
+          <View key={`${secId}-${rowId}`} style={styles.divider} />}
         renderSectionHeader={(secData, category) =>
           <Subheader text={category} />}
       />

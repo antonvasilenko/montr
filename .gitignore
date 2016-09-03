@@ -34,3 +34,4 @@ android/app/build
 /android/.gradle
 /android/build/intermediates/dex-cache/cache.xml
 /android/.idea
+/android/app/my-release-key.keystore

@@ -23,12 +23,6 @@ const styles = StyleSheet.create({
     top: -3,
     left: -8,
   },
-  leftAvatar: {
-    width: 56,
-  },
-  rightAvatar: {
-    width: 56,
-  },
   primaryText: Object.assign({}, TYPO.paperFontSubhead, { lineHeight: 24 }),
   secondaryText: Object.assign({}, TYPO.paperFontBody1, {
     lineHeight: 22,
@@ -65,8 +59,6 @@ export default class List extends Component {
     })),
     leftIcon: PropTypes.element,
     rightIcon: PropTypes.element,
-    leftAvatar: PropTypes.element,
-    rightAvatar: PropTypes.element,
     lines: PropTypes.number,
     primaryColor: PropTypes.string,
     onPress: PropTypes.func,
@@ -89,8 +81,6 @@ export default class List extends Component {
       primaryText,
       secondaryText,
       leftIcon,
-      leftAvatar,
-      rightAvatar,
       rightIcon,
       lines,
       onPress,
@@ -101,10 +91,11 @@ export default class List extends Component {
       captionText
     } = this.props;
 
+    const height = lines > 2 ? ((lines -1) * 16 + 56) : (secondaryText ? 72 : 48);
     return (
       <View
         ref={r => this.refRoot = r}
-        style={[styles.listContainer, { height: lines > 2 ? ((lines -1) * 16 + 56) : (secondaryText ? 72 : (leftAvatar || rightAvatar ) ? 56 : 48) }]}
+        style={[styles.listContainer, { height }]}
       >
         {leftIcon &&
           <TouchableWithoutFeedback onPress={onLeftIconClicked}>
@@ -112,11 +103,6 @@ export default class List extends Component {
               {leftIcon}
             </View>
           </TouchableWithoutFeedback>
-        }
-        {leftAvatar &&
-          <View style={[styles.leftAvatar, lines > 2 && { paddingTop: 16, alignSelf: 'flex-start' }]}>
-            {leftAvatar}
-          </View>
         }
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <View style={styles.firstLine}>
@@ -150,17 +136,6 @@ export default class List extends Component {
             </View>
           }
         </View>
-
-        {rightAvatar &&
-          <View
-            style={[styles.rightAvatar, lines > 2 && {
-              paddingTop: 16,
-              alignSelf: 'flex-start'
-            }]}
-          >
-            {rightAvatar}
-          </View>
-        }
         <View style={{ flexDirection: 'column' }}>
           {lines > 2 && !!rightIcon && !!captionText &&
             <View style={styles.captionTextContainer2}>
@@ -186,5 +161,4 @@ export default class List extends Component {
     );
   }
 }
-
 /* eslint-enable */
