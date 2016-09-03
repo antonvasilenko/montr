@@ -8,18 +8,24 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {
-  Subheader, COLOR,
+  COLOR, TYPO,
 } from 'react-native-material-design';
 
 import BuildPlanRow from './BuildPlanRow';
 import MonitorService from '../../services/MonitorService';
 import groupBuildPlans from './group-plans';
+import AppStore from '../../stores/AppStore';
 
 const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: COLOR.paperBlueGrey50.color,
   },
+  section: {
+    padding: 16,
+    backgroundColor: COLOR.paperBlueGrey50.color,
+  },
+  text: TYPO.paperFontBody1,
 });
 
 class ServicesScene extends Component {
@@ -35,13 +41,22 @@ class ServicesScene extends Component {
     };
   }
 
+
   componentDidMount() {
+    AppStore.listen(this.handleAppStore);
     this.loadData();
     this.timer = setInterval(this.loadData, 5000);
   }
   componentWillUnmount() {
+    AppStore.unlisten(this.handleAppStore);
     if (this.timer) clearInterval(this.timer);
     this.timer = null;
+  }
+
+  handleAppStore = (store) => {
+    this.setState({
+      theme: store.theme,
+    });
   }
 
   loadData = async () => {
@@ -57,6 +72,21 @@ class ServicesScene extends Component {
     }
   }
 
+  renderSectionHeader(text) {
+    return (
+      <View style={styles.section}>
+        <Text
+          style={[styles.text, {
+            fontWeight: '600',
+            fontSize: 18,
+          }]}
+        >
+          {text}
+        </Text>
+      </View>
+    );
+  }
+
   render() {
     return (
       <ListView style={{ backgroundColor: '#fff' }}
@@ -67,7 +97,7 @@ class ServicesScene extends Component {
         renderSeparator={(secId, rowId) =>
           <View key={`${secId}-${rowId}`} style={styles.divider} />}
         renderSectionHeader={(secData, category) =>
-          <Subheader text={category} />}
+          this.renderSectionHeader(category)}
       />
     );
   }
