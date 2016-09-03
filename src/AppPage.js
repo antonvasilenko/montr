@@ -96,7 +96,7 @@ class AppPage extends Component {
         <Navigator
           initialRoute={Navigate.getInitialRoute()}
           navigationBar={<Toolbar
-            title="Test"
+            route={this.state.route}
             onIconPress={() => this.drawer.openDrawer()}
           />}
           configureScene={() => Navigator.SceneConfigs.FadeAndroid}

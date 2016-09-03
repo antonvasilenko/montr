@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Toolbar as MaterialToolbar } from 'react-native-material-design';
 import AppStore from '../stores/AppStore';
+import routes from '../routes';
 
 export default class Toolbar extends Component {
 
@@ -10,7 +11,7 @@ export default class Toolbar extends Component {
 
   static propTypes = {
     onIconPress: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
+    route: PropTypes.string.isRequired,
     issues: PropTypes.object,
   };
 
@@ -59,11 +60,13 @@ export default class Toolbar extends Component {
   render() {
     const { navigator } = this.context;
     const { theme } = this.state;
-    const { onIconPress } = this.props;
+    const { onIconPress, route } = this.props;
+
+    const title = routes[route] ? routes[route].title : 'VEVE Montr';
 
     return (
       <MaterialToolbar
-        title={this.props.title}
+        title={title}
         primary={theme}
         icon={navigator && navigator.isChild ? 'keyboard-backspace' : 'menu'}
         onIconPress={() => (navigator && navigator.isChild ? navigator.back() : onIconPress())}
