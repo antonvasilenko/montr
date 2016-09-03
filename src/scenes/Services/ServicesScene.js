@@ -11,8 +11,9 @@ import {
   Subheader, COLOR,
 } from 'react-native-material-design';
 
-import Plan from './Plan';
+import BuildPlanRow from './BuildPlanRow';
 import MonitorService from '../../services/MonitorService';
+import groupBuildPlans from './group-plans';
 
 const styles = StyleSheet.create({
   divider: {
@@ -45,23 +46,24 @@ class ServicesScene extends Component {
 
   loadData = async () => {
     try {
-      const planMap = await MonitorService.getGroupedPlans();
+      const buildPlans = await MonitorService.getPlansData();
       if (!this.timer) return;
+      const groupedBuildPlans = groupBuildPlans(buildPlans);
       this.setState({
-        servicesDs: this.state.servicesDs.cloneWithRowsAndSections(planMap),
+        servicesDs: this.state.servicesDs.cloneWithRowsAndSections(groupedBuildPlans),
       });
     } catch (err) {
       console.warn(err);
     }
-  } 
+  }
 
   render() {
     return (
       <ListView style={{ backgroundColor: '#fff' }}
         enableEmptySections
         dataSource={this.state.servicesDs}
-        renderRow={(rowData, secId) =>
-          <Plan data={rowData} />}
+        renderRow={rowData =>
+          <BuildPlanRow data={rowData} />}
         renderSeparator={(secId, rowId) =>
           <View key={`${secId}-${rowId}`} style={styles.divider} />}
         renderSectionHeader={(secData, category) =>

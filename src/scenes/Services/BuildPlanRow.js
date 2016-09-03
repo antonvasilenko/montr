@@ -21,13 +21,13 @@ const renderRowIcon = item => {
 
 const renderRowSummary = item => {
   if (item.latestDeployment) {
-    return `int: #${item.latestDeployment.integration.planResultNumber} ` +
-      `prod: #${item.latestDeployment.production.planResultNumber}`;
+    return `int-${item.latestDeployment.integration.planResultNumber} ` +
+      `prod-${item.latestDeployment.production.planResultNumber}`;
   }
   if (item.latestResult) {
-    return `build-#${item.latestResult.buildNumber}`;
+    return `build-${item.latestResult.buildNumber}`;
   }
-  return 'no details :(';
+  return '';
 };
 
 const Plan = ({ data }) =>

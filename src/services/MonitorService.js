@@ -1,20 +1,6 @@
 import http from './HttpService';
-
-const getCategory = (plan) => {
-  if (plan && plan.name) {
-    if (plan.name.indexOf('-service') > 0
-      || plan.name.indexOf('processor') > 0) {
-      return 'Backend';
-    }
-    if (plan.name.indexOf('-app') > 0) {
-      return 'Frontend';
-    }
-    if (plan.name.indexOf('test') > 0) {
-      return 'Tests';
-    }
-  }
-  return 'Other';
-};
+import bamboo from './BambooService';
+import prtg from './PrtgService';
 
 const getPlanMetrics = (plan, sensors) => {
   const deployment = plan.latestDeployment || {};
@@ -39,52 +25,46 @@ const getPlanMetrics = (plan, sensors) => {
 };
 
 const getPlanIcon = (planMetrics) => {
-  let planClass;
-  let planIcon;
   let planColor;
+  let planIcon;
   const plan = planMetrics.plan;
   if (!plan.latestResult.successful ||
     !planMetrics.isIntegrationAlive ||
     !planMetrics.isProductionAlive) {
-    planClass = 'BuildPlan-statusBad';
+    planColor = 'BuildPlan-statusBad';
     planIcon = 'glyphicon glyphicon-remove-sign';
   } else if (!planMetrics.isLastBuildAtIntegration ||
     !planMetrics.isLastBuildAtProduction) {
-    planClass = 'BuildPlan-statusWarning';
+    planColor = 'BuildPlan-statusWarning';
     planIcon = 'glyphicon glyphicon-ok-sign';
   } else {
-    planClass = 'BuildPlan-statusGood';
+    planColor = 'BuildPlan-statusGood';
     planIcon = 'glyphicon glyphicon-ok-sign';
   }
   return {
-    className: planClass,
     icon: planIcon,
     color: planColor,
   };
 };
 
-class BambooService {
+class MonitorService {
 
-  getPlans() {
-    return http.get('/bamboo');
+  async getPlanData() {
+    bamboo.getPlans()
+      .then(plans => {
+        this.setState({ plans });
+      })
+      .catch(err => console.error(err));
+    prtg.getServiceSensors()
+      .then(sensors => {
+        this.setState({ sensors });
+      })
+      .catch(err => console.error(err));
   }
 
-  getHostSensors() {
-    return http.get('/prtg/hosts');
-  }
-
-  getServiceSensors() {
-    return http.get('/prtg/services');
-  }
-
-  async getGroupedPlans() {
-    const plansList = await this.getPlans();
-    const plansMap = {
-      Backend: [], Frontend: [], Tests: [], Other: [],
-    };
-    plansList.forEach(plan => plansMap[getCategory(plan)].push(plan));
-    return plansMap;
+  getPlansData() {
+    return bamboo.getPlans();
   }
 }
 
-export default new BambooService();
+export default new MonitorService();
