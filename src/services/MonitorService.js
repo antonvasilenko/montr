@@ -16,7 +16,6 @@ const getPlanMetrics = (plan, sensors) => {
   const productionSensor = sensors.production.find(s => s.name === plan.name);
   const isProductionAlive = !productionSensor || (productionSensor && productionSensor.up);
   return {
-    plan,
     isLastBuildAtIntegration,
     isLastBuildAtProduction,
     isIntegrationAlive,
@@ -24,46 +23,30 @@ const getPlanMetrics = (plan, sensors) => {
   };
 };
 
-const getPlanIcon = (planMetrics) => {
-  let planColor;
-  let planIcon;
-  const plan = planMetrics.plan;
+const getPlanIcon = (plan, planMetrics) => {
   if (!plan.latestResult.successful ||
     !planMetrics.isIntegrationAlive ||
     !planMetrics.isProductionAlive) {
-    planColor = 'BuildPlan-statusBad';
-    planIcon = 'glyphicon glyphicon-remove-sign';
-  } else if (!planMetrics.isLastBuildAtIntegration ||
-    !planMetrics.isLastBuildAtProduction) {
-    planColor = 'BuildPlan-statusWarning';
-    planIcon = 'glyphicon glyphicon-ok-sign';
-  } else {
-    planColor = 'BuildPlan-statusGood';
-    planIcon = 'glyphicon glyphicon-ok-sign';
+    return 'error';
   }
-  return {
-    icon: planIcon,
-    color: planColor,
-  };
+  if (!planMetrics.isLastBuildAtIntegration ||
+    !planMetrics.isLastBuildAtProduction) {
+    return 'warning';
+  }
+  return 'good';
 };
 
 class MonitorService {
 
-  async getPlanData() {
-    bamboo.getPlans()
-      .then(plans => {
-        this.setState({ plans });
-      })
-      .catch(err => console.error(err));
-    prtg.getServiceSensors()
-      .then(sensors => {
-        this.setState({ sensors });
-      })
-      .catch(err => console.error(err));
-  }
-
-  getPlansData() {
-    return bamboo.getPlans();
+  async getPlansData() {
+    const plans = await bamboo.getPlans();
+    const sensors = await prtg.getServiceSensors();
+    // console.warn('!!!', JSON.stringify(sensors));
+    return plans.map(plan => {
+      const metrics = getPlanMetrics(plan, sensors);
+      const icon = getPlanIcon(plan, metrics);
+      return { ...plan, metrics, icon };
+    });
   }
 }
 

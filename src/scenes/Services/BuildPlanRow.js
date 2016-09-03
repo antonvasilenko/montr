@@ -4,22 +4,25 @@ import {
 } from 'react-native-material-design';
 import ListItem from '../../components/ListItem';
 
-const renderRowIcon = item => {
-  const icon = {
-    name: 'cloud',
-    color: 'paperBlueGrey300',
-  };
-  if (item.enabled) {
-    icon.name = 'cloud-done';
-    icon.color = 'paperLightGreenA700';
+const getIconData = item => {
+  switch (item.icon) {
+    case 'good':
+      return { name: 'cloud-done', color: 'googleGreen500' };
+    case 'warning':
+      return { name: 'cloud-done', color: 'googleYellow500' };
+    case 'error':
+      return { name: 'error', color: 'googleRed500' };
+    default:
+      return { name: 'cloud', color: 'paperBlueGrey300' };
   }
-  return (<Icon
-    name={icon.name}
-    color={icon.color}
-  />);
 };
 
-const renderRowSummary = item => {
+const renderIcon = item => {
+  const data = getIconData(item);
+  return (<Icon name={data.name} color={data.color} />);
+};
+
+const renderSummary = item => {
   if (item.latestDeployment) {
     return `int-${item.latestDeployment.integration.planResultNumber} ` +
       `prod-${item.latestDeployment.production.planResultNumber}`;
@@ -33,8 +36,8 @@ const renderRowSummary = item => {
 const Plan = ({ data }) =>
   <ListItem
     primaryText={data.name}
-    secondaryText={renderRowSummary(data)}
-    leftIcon={renderRowIcon(data)}
+    secondaryText={renderSummary(data)}
+    leftIcon={renderIcon(data)}
   />;
 
 Plan.propTypes = {
