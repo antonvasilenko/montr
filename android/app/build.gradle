@@ -90,8 +90,8 @@ android {
         applicationId "com.montr"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode Integer.parseInt(project.VERSION_CODE)
+        versionName project.VERSION_NAME
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
