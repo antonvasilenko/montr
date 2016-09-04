@@ -2,17 +2,15 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
-  Image,
   View,
   Navigator,
   DrawerLayoutAndroid,
 } from 'react-native';
-import { Button, Card } from 'react-native-material-design';
 import Toolbar from './components/Toolbar';
-import imageWelcome from './img/welcome.jpg';
 
 import Navigate from './utils/Navigate';
 import NavScene from './scenes/NavScene';
+import AppActions from './stores/AppActions';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,8 +38,11 @@ const styles = StyleSheet.create({
 class AppPage extends Component {
 
   state = {
-    page: 'drawer',
     route: 'services',
+  }
+
+  componentDidMount() {
+    AppActions.loadTheme();
   }
 
   onSceneSelected = (name) => {
@@ -61,26 +62,7 @@ class AppPage extends Component {
 
   renderHeader = (name) => (<Text>{name}</Text>);
 
-  renderMaterial() {
-    return (
-      <View>
-        <Card>
-          <Card.Media
-            image={<Image source={imageWelcome} />}
-            overlay
-          />
-          <Card.Body>
-            <Text>Some text to go in the body.</Text>
-          </Card.Body>
-          <Card.Actions position="right">
-            <Button value="ACTION" text="Click" />
-          </Card.Actions>
-        </Card>
-      </View>
-    );
-  }
-
-  renderDrawer() {
+  render() {
     return (
       <DrawerLayoutAndroid
         drawerWidth={300}
@@ -111,17 +93,6 @@ class AppPage extends Component {
         />
       </DrawerLayoutAndroid>
     );
-  }
-
-  render() {
-    switch (this.state.page) {
-      case 'material':
-        return this.renderMaterial();
-      case 'drawer':
-        return this.renderDrawer();
-      default:
-        return (<Text>default</Text>);
-    }
   }
 }
 

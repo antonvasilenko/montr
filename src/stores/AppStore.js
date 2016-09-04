@@ -8,14 +8,15 @@ const THEME = '@Storage:theme';
 class AppStore {
 
   constructor() {
-    this.loadTheme();
+    // this.loadTheme();
 
     this.bindListeners({
       handleUpdateTheme: AppActions.UPDATE_THEME,
+      handleLoadTheme: AppActions.LOAD_THEME,
     });
   }
 
-  loadTheme = () => {
+  handleLoadTheme = () => {
     AsyncStorage.getItem(THEME).then((value) => {
       this.theme = value || 'paperTeal';
       AppActions.updateTheme(this.theme);

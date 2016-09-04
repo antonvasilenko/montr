@@ -8,6 +8,8 @@ class AppActions {
     StatusBarAndroid.setHexColor(COLOR[`${name}500`].color);
     return name;
   }
+
+  loadTheme() {}
 }
 
 export default alt.createActions(AppActions);

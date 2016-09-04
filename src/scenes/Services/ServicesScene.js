@@ -47,16 +47,15 @@ class ServicesScene extends Component {
     this.loadData();
     this.timer = setInterval(this.loadData, 5000);
   }
+
   componentWillUnmount() {
     AppStore.unlisten(this.handleAppStore);
     if (this.timer) clearInterval(this.timer);
     this.timer = null;
   }
 
-  handleAppStore = (store) => {
-    this.setState({
-      theme: store.theme,
-    });
+  handleAppStore = (/* store */) => {
+    // maybe handle thene changing somehow
   }
 
   loadData = async () => {
