@@ -55,7 +55,7 @@ class ServicesScene extends Component {
   }
 
   handleAppStore = (/* store */) => {
-    // maybe handle thene changing somehow
+    // maybe handle theme changing somehow
   }
 
   loadData = async () => {

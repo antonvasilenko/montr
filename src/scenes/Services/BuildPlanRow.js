@@ -4,7 +4,7 @@ import {
 } from 'react-native-material-design';
 import ListItem from '../../components/ListItem';
 
-const getIconData = item => {
+const getIcon = item => {
   switch (item.icon) {
     case 'good':
       return { name: 'cloud-done', color: 'googleGreen500' };
@@ -18,8 +18,8 @@ const getIconData = item => {
 };
 
 const renderIcon = item => {
-  const data = getIconData(item);
-  return (<Icon name={data.name} color={data.color} />);
+  const icon = getIcon(item);
+  return (<Icon name={icon.name} color={icon.color} />);
 };
 
 const renderSummary = item => {
