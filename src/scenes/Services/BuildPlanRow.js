@@ -23,14 +23,15 @@ const renderIcon = item => {
 };
 
 const renderSummary = item => {
-  if (item.latestDeployment) {
-    return `int-${item.latestDeployment.integration.planResultNumber} ` +
-      `prod-${item.latestDeployment.production.planResultNumber}`;
-  }
+  const parts = [];
   if (item.latestResult) {
-    return `build-${item.latestResult.buildNumber}`;
+    parts.push(`build - ${item.latestResult.buildNumber}`);
   }
-  return '';
+  if (item.latestDeployment) {
+    parts.push(`int - ${item.latestDeployment.integration.planResultNumber}`);
+    parts.push(`prod - ${item.latestDeployment.production.planResultNumber}`);
+  }
+  return parts.join(' ');
 };
 
 const Plan = ({ data }) =>

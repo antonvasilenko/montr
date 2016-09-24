@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { Toolbar as MaterialToolbar } from 'react-native-material-design';
+import StatusBarAndroid from 'react-native-android-statusbar';
+import { Toolbar as MaterialToolbar, COLOR } from 'react-native-material-design';
 import AppStore from '../stores/AppStore';
 import routes from '../routes';
 
@@ -21,6 +22,7 @@ export default class Toolbar extends Component {
       title: AppStore.getState().routeName,
       theme: AppStore.getState().theme,
     };
+    this.setStatusBarTheme(this.state.theme);
   }
 
   componentDidMount() {
@@ -31,12 +33,21 @@ export default class Toolbar extends Component {
     AppStore.unlisten(this.handleAppStore);
   }
 
+  setStatusBarTheme = (theme) => {
+    StatusBarAndroid.setHexColor(COLOR[`${theme}500`].color);
+  }
+
   handleAppStore = (store) => {
+    // TODO replace with this.updateState();
+    if (this.state.theme !== store.theme) {
+      this.setStatusBarTheme(store.theme);
+    }
     this.setState({
       title: store.routeName,
       theme: store.theme,
     });
   }
+
 
   issuesAction = () => {
     if (!this.props.issues || this.props.issues.count === 0) {

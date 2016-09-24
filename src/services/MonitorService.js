@@ -39,7 +39,7 @@ const getPlanIcon = (plan, planMetrics) => {
 class MonitorService {
 
   async getPlansData() {
-    const plans = await bamboo.getPlans();
+    const plans = await bamboo.getPlans() || [];
     const sensors = await prtg.getServiceSensors();
     // console.warn('!!!', JSON.stringify(sensors));
     return plans.map(plan => {
