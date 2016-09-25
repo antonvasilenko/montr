@@ -1,6 +1,6 @@
-import http from './HttpService';
 import bamboo from './BambooService';
 import prtg from './PrtgService';
+import AppActions from '../actions/AppActions';
 
 const getPlanMetrics = (plan, sensors) => {
   const deployment = plan.latestDeployment || {};
@@ -23,7 +23,7 @@ const getPlanMetrics = (plan, sensors) => {
   };
 };
 
-const getPlanIcon = (plan, planMetrics) => {
+const getPlanType = (plan, planMetrics) => {
   if (!plan.latestResult.successful ||
     !planMetrics.isIntegrationAlive ||
     !planMetrics.isProductionAlive) {
@@ -41,12 +41,14 @@ class MonitorService {
   async getPlansData() {
     const plans = await bamboo.getPlans() || [];
     const sensors = await prtg.getServiceSensors();
-    // console.warn('!!!', JSON.stringify(sensors));
-    return plans.map(plan => {
+    const plansData = plans.map(plan => {
       const metrics = getPlanMetrics(plan, sensors);
-      const icon = getPlanIcon(plan, metrics);
-      return { ...plan, metrics, icon };
+      const type = getPlanType(plan, metrics);
+      return { ...plan, metrics, type };
     });
+
+    AppActions.updateIssues(plansData);
+    return plansData;
   }
 }
 

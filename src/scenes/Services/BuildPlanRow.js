@@ -5,7 +5,7 @@ import {
 import ListItem from '../../components/ListItem';
 
 const getIcon = item => {
-  switch (item.icon) {
+  switch (item.type) {
     case 'good':
       return { name: 'cloud-done', color: 'googleGreen500' };
     case 'warning':

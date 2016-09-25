@@ -4,8 +4,8 @@ import {
   ListView,
   Text,
   StyleSheet,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
+  // TouchableHighlight,
+  // TouchableWithoutFeedback,
 } from 'react-native';
 import {
   COLOR, TYPO,
@@ -15,6 +15,7 @@ import BuildPlanRow from './BuildPlanRow';
 import MonitorService from '../../services/MonitorService';
 import groupBuildPlans from './group-plans';
 import AppStore from '../../stores/AppStore';
+import AppActions from '../../actions/AppActions';
 
 const styles = StyleSheet.create({
   divider: {
@@ -32,44 +33,51 @@ class ServicesScene extends Component {
 
   constructor(props) {
     super(props);
-    const servicesDs = new ListView.DataSource({
+    this.buildsDs = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
     });
     this.state = {
-      servicesDs: servicesDs.cloneWithRowsAndSections({ 'no data': [] }),
+      servicesDs: this.buildsDs.cloneWithRowsAndSections({ 'no data': [] }),
+      altState: AppStore.getState(),
     };
   }
 
 
   componentDidMount() {
     AppStore.listen(this.handleAppStore);
-    this.loadData();
-    this.timer = setInterval(this.loadData, 5000);
+    AppActions.fetchBuilds();
+    // this.loadData();
+    // this.timer = setInterval(this.loadData, 5000);
   }
 
   componentWillUnmount() {
     AppStore.unlisten(this.handleAppStore);
-    if (this.timer) clearInterval(this.timer);
-    this.timer = null;
+    // if (this.timer) clearInterval(this.timer);
+    // this.timer = null;
   }
 
-  handleAppStore = (/* store */) => {
+  handleAppStore = (state) => {
+    this.setState({ altState: state });
     // maybe handle theme changing somehow
   }
 
-  loadData = async () => {
+  /* loadData = async () => {
     try {
       const buildPlans = await MonitorService.getPlansData();
       if (!this.timer) return;
-      const groupedBuildPlans = groupBuildPlans(buildPlans);
       this.setState({
-        servicesDs: this.state.servicesDs.cloneWithRowsAndSections(groupedBuildPlans),
+        servicesDs: this.prepareDataSource(buildPlans),
       });
     } catch (err) {
       console.warn(err);
     }
-  }
+  }*/
+
+  /* prepareDataSource = (buildPlans) => {
+    const groupedBuildPlans = groupBuildPlans(buildPlans);
+    return this.buildsDs.cloneWithRowsAndSections(groupedBuildPlans);
+  }*/
 
   renderSectionHeader(text) {
     return (
@@ -87,10 +95,12 @@ class ServicesScene extends Component {
   }
 
   render() {
+    const ds = this.buildsDs.cloneWithRowsAndSections(this.state.altState.builds);
     return (
       <ListView style={{ backgroundColor: '#fff' }}
         enableEmptySections
-        dataSource={this.state.servicesDs}
+        dataSource={ds}
+        // dataSource={this.state.servicesDs}
         renderRow={rowData =>
           <BuildPlanRow data={rowData} />}
         renderSeparator={(secId, rowId) =>

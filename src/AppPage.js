@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,7 +10,6 @@ import Toolbar from './components/Toolbar';
 
 import Navigate from './utils/Navigate';
 import NavScene from './scenes/NavScene';
-import AppActions from './stores/AppActions';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,12 +36,16 @@ const styles = StyleSheet.create({
 
 class AppPage extends Component {
 
+  static childContextTypes = {
+    navigator: PropTypes.object,
+  };
+
   state = {
     route: 'services',
   }
 
-  componentDidMount() {
-    AppActions.loadTheme();
+  getChildContext() {
+    return { navigator: this.navigator };
   }
 
   onSceneSelected = (name) => {
@@ -79,6 +82,7 @@ class AppPage extends Component {
           initialRoute={Navigate.getInitialRoute()}
           navigationBar={<Toolbar
             route={this.state.route}
+            issues={{ count: 5, type: 'error' }}
             onIconPress={() => this.drawer.openDrawer()}
           />}
           configureScene={() => Navigator.SceneConfigs.FadeAndroid}

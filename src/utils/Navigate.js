@@ -120,7 +120,7 @@ export default class Navigate {
   */
   to = (path, title, props) => {
     if (!path) {
-      console.warn('[Navigate.to(undefined)] A route path is required to navigate to'); 
+      console.warn('[Navigate.to(undefined)] A route path is required to navigate to');
     } else {
       const obj = this.getRouteObject(path);
 

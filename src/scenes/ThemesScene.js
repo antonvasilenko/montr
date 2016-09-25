@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, View,
-  Text, StyleSheet, ListView, ScrollView } from 'react-native';
+  Text, StyleSheet, ScrollView } from 'react-native';
 import { COLOR, PRIMARY_COLORS } from 'react-native-material-design';
-
-import AppActions from '../stores/AppActions';
+import AppActions from '../actions/AppActions';
 
 const styles = StyleSheet.create({
   container: {

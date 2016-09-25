@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import StatusBarAndroid from 'react-native-android-statusbar';
-import { Toolbar as MaterialToolbar, COLOR } from 'react-native-material-design';
+import { Toolbar as MaterialToolbar } from 'react-native-material-design';
+import statusBarService from '../services/StatusBarService';
 import AppStore from '../stores/AppStore';
 import routes from '../routes';
 
@@ -16,61 +16,45 @@ export default class Toolbar extends Component {
     issues: PropTypes.object,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: AppStore.getState().routeName,
-      theme: AppStore.getState().theme,
-    };
-    this.setStatusBarTheme(this.state.theme);
-  }
+  state = AppStore.getState();
 
   componentDidMount() {
-    AppStore.listen(this.handleAppStore);
+    AppStore.listen(this.handleStoreChange);
+    statusBarService.setTheme(AppStore.getState().theme);
   }
 
   componentWillUnmount() {
-    AppStore.unlisten(this.handleAppStore);
+    AppStore.unlisten(this.handleStoreChange);
   }
 
-  setStatusBarTheme = (theme) => {
-    StatusBarAndroid.setHexColor(COLOR[`${theme}500`].color);
-  }
-
-  handleAppStore = (store) => {
+  handleStoreChange = (state) => {
     // TODO replace with this.updateState();
-    if (this.state.theme !== store.theme) {
-      this.setStatusBarTheme(store.theme);
-    }
-    this.setState({
-      title: store.routeName,
-      theme: store.theme,
-    });
+    statusBarService.setTheme(state.theme);
+    this.setState(state);
   }
 
-
-  issuesAction = () => {
-    if (!this.props.issues || this.props.issues.count === 0) {
+  fetchIssuesData = (issues) => {
+    if (!issues || issues.count === 0) {
       return undefined;
     }
-    const icon = this.props.issues.type === 'error' ? 'error' : 'warning';
+    const icon = issues.type === 'error' ? 'error' : 'warning';
     return {
       icon,
-      badge: { value: this.props.issues.count, anumate: true },
-      onPress: this.context.navigator.to('services'),
+      badge: { value: issues.count, animate: true },
+      onPress: () => this.context.navigator.to('services'),
     };
   }
 
-  renderActions = () => {
+  renderActions = (issues) => {
     const actions = [];
-    const issues = this.issuesAction();
-    if (issues) actions.push(issues);
+    const issuesData = this.fetchIssuesData(issues);
+    if (issuesData) actions.push(issuesData);
     return actions;
   }
 
   render() {
     const { navigator } = this.context;
-    const { theme } = this.state;
+    const { theme, issues } = this.state;
     const { onIconPress, route } = this.props;
 
     const title = routes[route] ? routes[route].title : 'VEVE Montr';
@@ -81,7 +65,7 @@ export default class Toolbar extends Component {
         primary={theme}
         icon={navigator && navigator.isChild ? 'keyboard-backspace' : 'menu'}
         onIconPress={() => (navigator && navigator.isChild ? navigator.back() : onIconPress())}
-        actions={this.renderActions()}
+        actions={this.renderActions(issues)}
         rightIconStyle={{
           margin: 10,
         }}
