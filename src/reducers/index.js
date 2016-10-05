@@ -13,11 +13,17 @@ const initialState = {
 
 const builds = (state = initialState.builds, action) => {
   switch (action.type) {
-    case 'RECEIVE_BUILDS':
+    case 'FETCH_BUILDS_START':
       return {
-        list: action.buildsData,
+        ...state,
+        isLoading: true,
+      };
+    case 'FETCH_BUILDS_SUCCESS':
+      return {
+        list: action.list,
         isLoading: false,
       };
+    // TODO handle FETCH_BUILDS_ERROR
     default:
       return state;
   }
@@ -28,10 +34,15 @@ const getCountOfIssuesOfType = type => state =>
 
 const issues = (state, action) => {
   switch (action.type) {
-    case 'RECEIVE_BUILDS':
+    case 'FETCH_BUILDS_SUCCESS':
       return {
         errors: getCountOfIssuesOfType('error')(action.buildsData),
         warnings: getCountOfIssuesOfType('warning')(action.buildsData),
+      };
+    case 'FETCH_BUILDS_ERROR':
+      return {
+        errors: 1,
+        warnings: 0,
       };
     default:
       return state;

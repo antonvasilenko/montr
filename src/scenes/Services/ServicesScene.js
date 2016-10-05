@@ -13,7 +13,7 @@ import {
 
 import BuildPlanRow from './BuildPlanRow';
 import MonitorService from '../../services/MonitorService';
-import groupBuildPlans from './group-plans';
+import groupBuildPlans from '../../services/group-plans';
 import AppStore from '../../stores/AppStore';
 
 const styles = StyleSheet.create({
