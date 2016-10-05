@@ -4,8 +4,8 @@ import {
   ListView,
   Text,
   StyleSheet,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
+  // TouchableHighlight,
+  // TouchableWithoutFeedback,
 } from 'react-native';
 import {
   COLOR, TYPO,

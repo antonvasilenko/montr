@@ -1,4 +1,3 @@
-import http from './HttpService';
 import bamboo from './BambooService';
 import prtg from './PrtgService';
 

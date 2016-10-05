@@ -9,11 +9,11 @@ export default {
     component: ServicesScene,
     icon: 'cloud-queue',
   },
-  /* hosts: {
+  hosts: {
     title: 'Hosts',
     icon: 'computer',
     component: HostsScene,
-  },*/
+  },
   themes: {
     title: 'Themes',
     icon: 'brush',
