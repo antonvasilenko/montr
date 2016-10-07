@@ -3,6 +3,7 @@ import StatusBarAndroid from 'react-native-android-statusbar';
 import { Toolbar as MaterialToolbar, COLOR } from 'react-native-material-design';
 import AppStore from '../stores/AppStore';
 import routes from '../routes';
+import test from '../test';
 
 export default class Toolbar extends Component {
 
@@ -48,6 +49,7 @@ export default class Toolbar extends Component {
     });
   }
 
+  test: true;
 
   issuesAction = () => {
     if (!this.props.issues || this.props.issues.count === 0) {
@@ -61,10 +63,17 @@ export default class Toolbar extends Component {
     };
   }
 
+  testActions = () => ({
+    icon: 'developer_mode',
+    badge: { value: this.props.issues.count, anumate: true },
+    onPress: () => test(),
+  });
+
   renderActions = () => {
     const actions = [];
     const issues = this.issuesAction();
     if (issues) actions.push(issues);
+    if (this.test) actions.push(this.testAction());
     return actions;
   }
 

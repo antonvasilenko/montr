@@ -20,10 +20,15 @@ const builds = (state = initialState.builds, action) => {
       };
     case 'FETCH_BUILDS_SUCCESS':
       return {
+        ...state,
         list: action.list,
         isLoading: false,
       };
-    // TODO handle FETCH_BUILDS_ERROR
+    case 'FETCH_BUILDS_ERROR':
+      return {
+        ...state,
+        isLoading: false,
+      };
     default:
       return state;
   }
@@ -32,7 +37,7 @@ const builds = (state = initialState.builds, action) => {
 const getCountOfIssuesOfType = type => state =>
   state.reduce((num, pl) => (num + pl.type === type ? 1 : 0), 0) || [];
 
-const issues = (state, action) => {
+const issues = (state = initialState.issues, action) => {
   switch (action.type) {
     case 'FETCH_BUILDS_SUCCESS':
       return {
