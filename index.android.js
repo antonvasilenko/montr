@@ -3,16 +3,6 @@
  */
 import React from 'react';
 import { AppRegistry } from 'react-native';
-import AppPage from './src/AppPage';
-// import { Provider } from 'react-redux';
-// import configureStore from './src/configureStore';
+import root from './src/AppContainer';
 
-// const store = configureStore();
-
-/* AppRegistry.registerComponent('montr', () => 
-  <Provider store={store}>
-    <AppPage />
-  </Provider>
-  ); */
-
-AppRegistry.registerComponent('montr', () => AppPage);
+AppRegistry.registerComponent('montr', () => root);

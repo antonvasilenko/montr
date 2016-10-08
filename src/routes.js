@@ -1,4 +1,4 @@
-import ServicesScene from './scenes/Services/ServicesScene';
+import ServicesScene from './scenes/Services/ServicesContainer';
 import HostsScene from './scenes/HostsScene';
 import ThemesScene from './scenes/ThemesScene';
 

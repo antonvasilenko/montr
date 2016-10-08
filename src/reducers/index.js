@@ -4,7 +4,7 @@ import groupBuilds from '../services/group-plans';
 const initialState = {
   builds: {
     groups: {},
-    isLoading: false,
+    isFetching: false,
   },
   issues: {
     errors: 0,
@@ -17,18 +17,18 @@ const builds = (state = initialState.builds, action) => {
     case 'FETCH_BUILDS_START':
       return {
         ...state,
-        isLoading: true,
+        isFetching: true,
       };
     case 'FETCH_BUILDS_SUCCESS':
       return {
         ...state,
         groups: groupBuilds(action.list),
-        isLoading: false,
+        isFetching: false,
       };
     case 'FETCH_BUILDS_ERROR':
       return {
         ...state,
-        isLoading: false,
+        isFetching: false,
       };
     default:
       return state;
