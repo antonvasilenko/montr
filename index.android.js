@@ -1,6 +1,7 @@
 /**
  * @flow
  */
+import React from 'react';
 import { AppRegistry } from 'react-native';
 import AppPage from './src/AppPage';
 // import { Provider } from 'react-redux';
@@ -8,8 +9,10 @@ import AppPage from './src/AppPage';
 
 // const store = configureStore();
 
-AppRegistry.registerComponent('montr', () => 
-  // <Provider store={store}>
+/* AppRegistry.registerComponent('montr', () => 
+  <Provider store={store}>
     <AppPage />
-  // </Provider>
-  );
+  </Provider>
+  ); */
+
+AppRegistry.registerComponent('montr', () => AppPage);
