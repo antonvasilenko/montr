@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
+import groupBuilds from '../services/group-plans';
 
 const initialState = {
   builds: {
-    list: [],
+    groups: {},
     isLoading: false,
   },
   issues: {
@@ -21,7 +22,7 @@ const builds = (state = initialState.builds, action) => {
     case 'FETCH_BUILDS_SUCCESS':
       return {
         ...state,
-        list: action.list,
+        groups: groupBuilds(action.list),
         isLoading: false,
       };
     case 'FETCH_BUILDS_ERROR':
@@ -38,11 +39,12 @@ const getCountOfIssuesOfType = type => state =>
   state.reduce((num, pl) => (num + pl.type === type ? 1 : 0), 0) || [];
 
 const issues = (state = initialState.issues, action) => {
+  console.log('issues reducer', action);
   switch (action.type) {
     case 'FETCH_BUILDS_SUCCESS':
       return {
-        errors: getCountOfIssuesOfType('error')(action.buildsData),
-        warnings: getCountOfIssuesOfType('warning')(action.buildsData),
+        errors: getCountOfIssuesOfType('error')(action.list),
+        warnings: getCountOfIssuesOfType('warning')(action.list),
       };
     case 'FETCH_BUILDS_ERROR':
       return {

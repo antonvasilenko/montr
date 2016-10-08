@@ -42,7 +42,7 @@ export default class Toolbar extends Component {
     });
   }
 
-  test: true;
+  test = true;
 
   issuesAction = () => {
     if (!this.props.issues || this.props.issues.count === 0) {
@@ -57,17 +57,15 @@ export default class Toolbar extends Component {
   }
 
   testActions = () => ({
-    icon: 'developer_mode',
-    badge: { value: this.props.issues.count, anumate: true },
+    icon: 'developer-mode',
     onPress: () => test(),
   });
 
   renderActions = () => {
     const actions = [];
+    if (this.test) actions.push(this.testActions());
     const issues = this.issuesAction();
     if (issues) actions.push(issues);
-    if (this.test) actions.push(this.testAction());
-    console.log(actions);
     return actions;
   }
 

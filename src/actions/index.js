@@ -1,5 +1,4 @@
 import monitoringService from '../services/MonitorService';
-import groupBuilds from '../services/group-plans';
 
 const actions = {
   onFetchBuildsStarted: () => ({
@@ -18,9 +17,8 @@ const actions = {
 export const getBuilds = () => async dispatch => {
   dispatch(actions.onFetchBuildsStarted());
   try {
-    const builds = await monitoringService.getPlansData();
-    const groupedBuilds = groupBuilds(builds);
-    dispatch(actions.onFetchBuildsSucceeded(groupedBuilds));
+    const buildsList = await monitoringService.getPlansData();
+    dispatch(actions.onFetchBuildsSucceeded(buildsList));
   } catch (err) {
     dispatch(actions.onBuildsFetchFailed(err));
   }
