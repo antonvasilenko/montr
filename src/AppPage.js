@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,7 +6,7 @@ import {
   Navigator,
   DrawerLayoutAndroid,
 } from 'react-native';
-import Toolbar from './components/Toolbar';
+import Toolbar from './components/ToolbarContainer';
 
 import Navigate from './utils/Navigate';
 import NavScene from './scenes/NavScene';
@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
 
 class AppPage extends Component {
 
+  static propTypes = {
+    openDrawer: PropTypes.func,
+    closeDrawer: PropTypes.func,
+  }
+
   state = {
     route: 'services',
   }
@@ -47,6 +52,7 @@ class AppPage extends Component {
 
   onSceneSelected = (name) => {
     this.setState({ route: name }, () => {
+      this.props.openDrawer();
       this.drawer.closeDrawer();
       this.navigator.to(name);
     });
@@ -77,10 +83,7 @@ class AppPage extends Component {
       >
         <Navigator
           initialRoute={Navigate.getInitialRoute()}
-          navigationBar={<Toolbar
-            route={this.state.route}
-            onIconPress={() => this.drawer.openDrawer()}
-          />}
+          navigationBar={<Toolbar />}
           configureScene={() => Navigator.SceneConfigs.FadeAndroid}
           ref={this.setNavigator}
           renderScene={route =>

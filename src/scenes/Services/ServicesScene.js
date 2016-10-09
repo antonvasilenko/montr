@@ -47,11 +47,10 @@ class ServicesScene extends Component {
 
   componentDidMount() {
     this.timerTicked();
-    this.timer = setInterval(this.timerTicked, 15000);
+    //this.timer = setInterval(this.timerTicked, 15000);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('11111111111111111');
     if (this.props.buildGroups !== nextProps.buildGroups) {
       this.setState({
         buildsDs: ds.cloneWithRowsAndSections(nextProps.buildGroups),

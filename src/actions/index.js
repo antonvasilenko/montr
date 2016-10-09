@@ -1,4 +1,5 @@
 import monitoringService from '../services/MonitorService';
+import routes from '../routes';
 
 const actions = {
   onFetchBuildsStarted: () => ({
@@ -11,6 +12,13 @@ const actions = {
   onBuildsFetchFailed: error => ({
     type: 'FETCH_BUILDS_ERROR',
     error,
+  }),
+  onDrawerOpen: () => ({ type: 'DRAWER_OPEN' }),
+  onDrawerClose: () => ({ type: 'DRAWER_CLOSE' }),
+  onNavigateTo: (route, title) => ({
+    type: 'NAVIGATE',
+    route,
+    title,
   }),
 };
 
@@ -33,4 +41,12 @@ export const updateTheme = name => (dispatch, getState) => {
     };
   }
   return false;
+};
+
+export const openDrawer = actions.onDrawerOpen;
+export const closeDrawer = actions.onDrawerClose;
+
+export const navigateTo = (route) => {
+  const title = routes[route] ? routes[route].title : 'VEVE Montr';
+  return actions.onNavigateTo(route, title);
 };

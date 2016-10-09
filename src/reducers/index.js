@@ -10,6 +10,13 @@ const initialState = {
     errors: 0,
     warnings: 0,
   },
+  drawer: {
+    opened: false,
+  },
+  route: {
+    key: 'services',
+    title: 'Services',
+  },
 };
 
 const builds = (state = initialState.builds, action) => {
@@ -35,17 +42,17 @@ const builds = (state = initialState.builds, action) => {
   }
 };
 
-const getCountOfIssuesOfType = type => state =>
-  state.reduce((num, pl) => (num + pl.type === type ? 1 : 0), 0) || [];
+const getCountOfIssuesOfType = type => list =>
+  list.reduce((num, pl) => (num + (pl.icon === type ? 1 : 0)), 0) || 0;
 
 const issues = (state = initialState.issues, action) => {
-  console.log('issues reducer', action);
   switch (action.type) {
-    case 'FETCH_BUILDS_SUCCESS':
+    case 'FETCH_BUILDS_SUCCESS': {
       return {
         errors: getCountOfIssuesOfType('error')(action.list),
         warnings: getCountOfIssuesOfType('warning')(action.list),
       };
+    }
     case 'FETCH_BUILDS_ERROR':
       return {
         errors: 1,
@@ -56,8 +63,38 @@ const issues = (state = initialState.issues, action) => {
   }
 };
 
+const drawer = (state = initialState.drawer, action) => {
+  switch (action.type) {
+    case 'DRAWER_OPEN':
+      return {
+        ...state,
+        opened: true,
+      };
+    case 'DRAWER_CLOSE':
+      return {
+        ...state,
+        opened: false,
+      };
+    default: return state;
+  }
+};
+
+const route = (state = initialState.route, action) => {
+  switch (action.type) {
+    case 'NAVIGATE':
+      return {
+        ...state,
+        key: action.route,
+        title: action.title,
+      };
+    default: return state;
+  }
+};
+
 
 export default combineReducers({
   builds,
   issues,
+  drawer,
+  route,
 });
