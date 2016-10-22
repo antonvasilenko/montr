@@ -19,18 +19,14 @@ const styles = {
 export default class NavScene extends Component {
 
   static propTypes = {
-    onSceneSelected: PropTypes.func.isRequired,
-    route: PropTypes.string.isRequired,
-  };
-
-  changeScene = (name) => {
-    this.props.onSceneSelected(name);
+    sceneSelected: PropTypes.func,
+    route: PropTypes.string,
   };
 
   render() {
     const route = this.props.route;
 
-    const changeSceneCb = sceneName => () => this.changeScene(sceneName);
+    const changeSceneCb = sceneName => () => this.props.sceneSelected(sceneName);
 
     return (
       <Drawer theme="light">
@@ -40,7 +36,7 @@ export default class NavScene extends Component {
               <Image source={require('./../img/ch24_mon.png')} />
             } />
             <Text style={[styles.text, COLOR.paperGrey50, TYPO.paperFontHeadline]}>
-              VEVE Monitoring Hub
+              VEVE/VC Monitoring
             </Text>
           </View>
         </Drawer.Header>

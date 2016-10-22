@@ -7,9 +7,9 @@ import {
   DrawerLayoutAndroid,
 } from 'react-native';
 import Toolbar from './components/ToolbarContainer';
-
 import Navigate from './utils/Navigate';
-import NavScene from './scenes/NavScene';
+
+import NavScene from './scenes/NavSceneContainer';
 import AppActions from './stores/AppActions';
 
 const styles = StyleSheet.create({
@@ -38,27 +38,17 @@ const styles = StyleSheet.create({
 class AppPage extends Component {
 
   static propTypes = {
+    setNavigator: PropTypes.func,
     setDrawer: PropTypes.func,
     closeDrawer: PropTypes.func,
-  }
-
-  state = {
-    route: 'services',
   }
 
   componentDidMount() {
     AppActions.loadTheme();
   }
 
-  onSceneSelected = (name) => {
-    this.setState({ route: name }, () => {
-      this.props.closeDrawer();
-      this.navigator.to(name);
-    });
-  }
-
   setNavigator = (navi) => {
-    this.navigator = new Navigate(navi);
+    this.props.setNavigator(navi);
   }
 
   setDrawer = drawer => {
@@ -72,12 +62,7 @@ class AppPage extends Component {
       <DrawerLayoutAndroid
         drawerWidth={300}
         drawerPosition={DrawerLayoutAndroid.positions.Left}
-        renderNavigationView={() =>
-          <NavScene
-            onSceneSelected={this.onSceneSelected}
-            route={this.state.route}
-          />
-        }
+        renderNavigationView={() => <NavScene />}
         ref={this.setDrawer}
       >
         <Navigator

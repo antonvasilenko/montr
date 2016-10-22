@@ -15,6 +15,7 @@ const initialState = {
       ref: null,
     },
     route: {
+      naviRef: null,
       key: 'services',
       title: 'Services',
     },
@@ -98,14 +99,22 @@ const drawer = (state = initialState.ui.drawer, action) => {
   }
 };
 
+
 const route = (state = initialState.ui.route, action) => {
   switch (action.type) {
-    case 'NAVIGATE':
+    case 'NAVIGATOR_SET':
+      return {
+        ...state,
+        naviRef: action.ref,
+      };
+    case 'NAVIGATE': {
+      state.naviRef.to(action.route);
       return {
         ...state,
         key: action.route,
         title: action.title,
       };
+    }
     default: return state;
   }
 };
