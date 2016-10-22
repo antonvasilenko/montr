@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 class AppPage extends Component {
 
   static propTypes = {
-    openDrawer: PropTypes.func,
+    setDrawer: PropTypes.func,
     closeDrawer: PropTypes.func,
   }
 
@@ -52,8 +52,7 @@ class AppPage extends Component {
 
   onSceneSelected = (name) => {
     this.setState({ route: name }, () => {
-      this.props.openDrawer();
-      this.drawer.closeDrawer();
+      this.props.closeDrawer();
       this.navigator.to(name);
     });
   }
@@ -63,7 +62,7 @@ class AppPage extends Component {
   }
 
   setDrawer = drawer => {
-    this.drawer = drawer;
+    this.props.setDrawer(drawer);
   }
 
   renderHeader = (name) => (<Text>{name}</Text>);

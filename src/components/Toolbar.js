@@ -39,17 +39,13 @@ export default class Toolbar extends Component {
     AppStore.unlisten(this.handleAppStore);
   }
 
-  testActions = () => ({
-    icon: 'developer-mode',
-    onPress: () => test(),
-  });
 
   getButtonIcon = (issues) => {
     if (!issues) return undefined;
     if (issues.errors > 0) return 'highlight-off';
     if (issues.warnings > 0) return 'info-outline';
     return 'check-circle';
-  };
+  }
 
   getButtonBadgeValue = (issues) => {
     if (!issues) return 0;
@@ -57,6 +53,11 @@ export default class Toolbar extends Component {
     if (issues.warnings > 0) return issues.warnings;
     return 0;
   }
+
+  testActions = () => ({
+    icon: 'developer-mode',
+    onPress: () => test(),
+  });
 
   test = true;
 

@@ -13,6 +13,7 @@ const actions = {
     type: 'FETCH_BUILDS_ERROR',
     error,
   }),
+  onDrawerSet: (ref) => ({ type: 'DRAWER_SET', ref }),
   onDrawerOpen: () => ({ type: 'DRAWER_OPEN' }),
   onDrawerClose: () => ({ type: 'DRAWER_CLOSE' }),
   onNavigateTo: (route, title) => ({
@@ -43,6 +44,7 @@ export const updateTheme = name => (dispatch, getState) => {
   return false;
 };
 
+export const setDrawer = actions.onDrawerSet;
 export const openDrawer = actions.onDrawerOpen;
 export const closeDrawer = actions.onDrawerClose;
 
