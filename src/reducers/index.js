@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import groupBuilds from '../services/group-plans';
 
 const initialState = {
   builds: {
@@ -19,6 +18,7 @@ const initialState = {
       key: 'services',
       title: 'Services',
     },
+    theme: 'paperTeal',
   },
 };
 
@@ -32,7 +32,7 @@ const builds = (state = initialState.builds, action) => {
     case 'FETCH_BUILDS_SUCCESS':
       return {
         ...state,
-        groups: groupBuilds(action.list),
+        groups: action.groups,
         isFetching: false,
       };
     case 'FETCH_BUILDS_ERROR':
@@ -45,15 +45,12 @@ const builds = (state = initialState.builds, action) => {
   }
 };
 
-const getCountOfIssuesOfType = type => list =>
-  list.reduce((num, pl) => (num + (pl.icon === type ? 1 : 0)), 0) || 0;
-
 const issues = (state = initialState.issues, action) => {
   switch (action.type) {
     case 'FETCH_BUILDS_SUCCESS': {
       return {
-        errors: getCountOfIssuesOfType('error')(action.list),
-        warnings: getCountOfIssuesOfType('warning')(action.list),
+        errors: action.errors,
+        warnings: action.warnings,
       };
     }
     case 'FETCH_BUILDS_ERROR':
@@ -119,6 +116,15 @@ const route = (state = initialState.ui.route, action) => {
   }
 };
 
+const theme = (state = initialState.ui.theme, action) => {
+  switch (action.type) {
+    case 'UPDATE_THEME':
+      return action.name || state;
+    default:
+      return state;
+  }
+};
+
 
 export default combineReducers({
   builds,
@@ -126,5 +132,6 @@ export default combineReducers({
   ui: combineReducers({
     drawer,
     route,
+    theme,
   }),
 });

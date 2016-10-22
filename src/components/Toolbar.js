@@ -1,9 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Toolbar as MaterialToolbar } from 'react-native-material-design';
-import AppStore from '../stores/AppStore';
-
 import test from '../test';
-import statusBarService from '../services/StatusBarService';
 
 export default class Toolbar extends Component {
 
@@ -14,31 +11,11 @@ export default class Toolbar extends Component {
   static propTypes = {
     title: PropTypes.string,
     issues: PropTypes.object.isRequired,
+    theme: PropTypes.string.isRequired,
     updating: PropTypes.bool,
     onLeftActionPress: PropTypes.func.isRequired,
     onIssuesPress: PropTypes.func.isRequired,
   };
-
-  // state.title
-  // state.theme
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: AppStore.getState().routeName,
-      theme: AppStore.getState().theme,
-    };
-    statusBarService.setTheme(this.state.theme);
-  }
-
-  componentDidMount() {
-    AppStore.listen(this.handleAppStore);
-  }
-
-  componentWillUnmount() {
-    AppStore.unlisten(this.handleAppStore);
-  }
-
 
   getButtonIcon = (issues) => {
     if (!issues) return undefined;
@@ -60,14 +37,6 @@ export default class Toolbar extends Component {
   });
 
   test = true;
-
-  handleAppStore = (store) => {
-    statusBarService.setTheme(store.theme);
-    this.setState({
-      title: store.routeName,
-      theme: store.theme,
-    });
-  }
 
   renderIssuesButton = ({ issues, onIssuesPress }) => {
     if (!issues) {
@@ -93,8 +62,7 @@ export default class Toolbar extends Component {
 
   render() {
     const { navigator } = this.context;
-    const { theme } = this.state;
-    const { onLeftActionPress, title } = this.props;
+    const { onLeftActionPress, title, theme } = this.props;
 
     return (
       <MaterialToolbar

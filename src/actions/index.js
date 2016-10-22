@@ -1,14 +1,23 @@
 import monitoringService from '../services/MonitorService';
+import groupBuilds from '../services/group-plans';
+
 import Navigate from '../utils/Navigate';
 import routes from '../routes';
+
+import { updateThemeByIssues } from './theme';
+
+const getCountOfIssuesOfType = type => list =>
+  list.reduce((num, pl) => (num + (pl.icon === type ? 1 : 0)), 0) || 0;
 
 const actions = {
   onFetchBuildsStarted: () => ({
     type: 'FETCH_BUILDS_START',
   }),
-  onFetchBuildsSucceeded: builds => ({
+  onFetchBuildsSucceeded: (groups, errors, warnings) => ({
     type: 'FETCH_BUILDS_SUCCESS',
-    list: builds,
+    groups,
+    errors,
+    warnings,
   }),
   onBuildsFetchFailed: error => ({
     type: 'FETCH_BUILDS_ERROR',
@@ -33,21 +42,14 @@ export const getBuilds = () => async dispatch => {
   dispatch(actions.onFetchBuildsStarted());
   try {
     const buildsList = await monitoringService.getPlansData();
-    dispatch(actions.onFetchBuildsSucceeded(buildsList));
+    const errors = getCountOfIssuesOfType('error')(buildsList);
+    const warnings = getCountOfIssuesOfType('warning')(buildsList);
+    const groups = groupBuilds(buildsList);
+    dispatch(actions.onFetchBuildsSucceeded(groups, errors, warnings));
+    dispatch(updateThemeByIssues(errors, warnings));
   } catch (err) {
     dispatch(actions.onBuildsFetchFailed(err));
   }
-};
-
-export const updateTheme = name => (dispatch, getState) => {
-  const currentThemeName = getState();
-  if (currentThemeName !== name) { // TODO check here or put in the reducer ????
-    return {
-      type: 'UPDATE_THEME',
-      name,
-    };
-  }
-  return false;
 };
 
 export const setDrawer = actions.onDrawerSet;

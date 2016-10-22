@@ -1,6 +1,6 @@
 import ServicesScene from './scenes/Services/ServicesContainer';
 import HostsScene from './scenes/HostsScene';
-import ThemesScene from './scenes/ThemesScene';
+import ThemesScene from './scenes/ThemesSceneContainer';
 
 export default {
   services: {

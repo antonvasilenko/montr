@@ -40,22 +40,13 @@ class AppPage extends Component {
   static propTypes = {
     setNavigator: PropTypes.func,
     setDrawer: PropTypes.func,
+    loadTheme: PropTypes.func,
     closeDrawer: PropTypes.func,
   }
 
   componentDidMount() {
-    AppActions.loadTheme();
+    this.props.loadTheme();
   }
-
-  setNavigator = (navi) => {
-    this.props.setNavigator(navi);
-  }
-
-  setDrawer = drawer => {
-    this.props.setDrawer(drawer);
-  }
-
-  renderHeader = (name) => (<Text>{name}</Text>);
 
   render() {
     return (
@@ -63,13 +54,13 @@ class AppPage extends Component {
         drawerWidth={300}
         drawerPosition={DrawerLayoutAndroid.positions.Left}
         renderNavigationView={() => <NavScene />}
-        ref={this.setDrawer}
+        ref={r => this.props.setDrawer(r)}
       >
         <Navigator
           initialRoute={Navigate.getInitialRoute()}
           navigationBar={<Toolbar />}
           configureScene={() => Navigator.SceneConfigs.FadeAndroid}
-          ref={this.setNavigator}
+          ref={r => this.props.setNavigator(r)}
           renderScene={route =>
             <View
               style={styles.scene}

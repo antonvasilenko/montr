@@ -7,6 +7,7 @@ const mapStateToProps = state => ({
   title: state.ui.route.title,
   issues: state.issues,
   updating: state.builds.isFetching,
+  theme: state.ui.theme,
 });
 
 const mapDispatchToProps = dispatch => ({

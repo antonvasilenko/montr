@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, { PropTypes } from 'react';
 import { TouchableHighlight, View,
   Text, StyleSheet, ScrollView } from 'react-native';
-import { COLOR, PRIMARY_COLORS } from 'react-native-material-design';
 
-import AppActions from '../stores/AppActions';
+import themeService from '../services/ThemeService';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,23 +21,28 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class ThemesScene extends Component {
+  // changeTheme = (theme) => {
+  //   AppActions.updateTheme(theme);
+  // }
 
-  changeTheme = (theme) => {
-    AppActions.updateTheme(theme);
-  }
 
-  render() {
-    return (
-      <ScrollView style={{ backgroundColor: '#fff' }}>
-        {PRIMARY_COLORS.map(color =>
-          <TouchableHighlight key={color} onPress={() => { this.changeTheme(color); }}>
-            <View style={[styles.item, { backgroundColor: COLOR[`${color}500`].color }]}>
-              <Text style={styles.text}>{color}</Text>
-            </View>
-          </TouchableHighlight>
-        )}
-      </ScrollView>
-    );
-  }
-}
+const ThemeService = ({ updateTheme }) =>
+  <ScrollView style={{ backgroundColor: '#fff' }}>
+    {themeService.getThemes().map(th =>
+      <TouchableHighlight
+        key={th.color}
+        onPress={() => updateTheme(th.color)}
+      >
+        <View style={[styles.item, { backgroundColor: th.background }]}>
+          <Text style={styles.text}>{th.color}</Text>
+        </View>
+      </TouchableHighlight>
+    )}
+  </ScrollView>;
+
+ThemeService.propTypes = {
+  // theme: PropTypes.string,
+  updateTheme: PropTypes.func,
+};
+
+export default ThemeService;
