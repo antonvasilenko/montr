@@ -105,12 +105,15 @@ const route = (state = initialState.ui.route, action) => {
         naviRef: action.ref,
       };
     case 'NAVIGATE': {
-      state.naviRef.to(action.route);
-      return {
-        ...state,
-        key: action.route,
-        title: action.title,
-      };
+      if (state.key !== action.route) {
+        state.naviRef.to(action.route);
+        return {
+          ...state,
+          key: action.route,
+          title: action.title,
+        };
+      }
+      return state;
     }
     default: return state;
   }
