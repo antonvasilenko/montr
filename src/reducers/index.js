@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 const initialState = {
   builds: {
-    groups: {},
+    groups: { 'no data': [] },
     isFetching: false,
   },
   issues: {

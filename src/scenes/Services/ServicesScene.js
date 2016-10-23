@@ -41,13 +41,13 @@ class ServicesScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      buildsDs: ds.cloneWithRowsAndSections({ 'no data': [] }),
+      buildsDs: ds.cloneWithRowsAndSections(props.buildGroups),
     };
   }
 
   componentDidMount() {
-    this.timerTicked();
-    //this.timer = setInterval(this.timerTicked, 15000);
+    this.props.onTimerTicked();
+    // this.timer = setInterval(this.props.onTimerTicked, 15000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -61,11 +61,6 @@ class ServicesScene extends Component {
   componentWillUnmount() {
     if (this.timer) clearInterval(this.timer);
     this.timer = null;
-  }
-
-  timerTicked = () => {
-    console.log('tick');
-    this.props.onTimerTicked();
   }
 
   renderSectionHeader(text) {

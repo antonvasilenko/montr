@@ -1,16 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   Navigator,
   DrawerLayoutAndroid,
 } from 'react-native';
 import Toolbar from './components/ToolbarContainer';
-import Navigate from './utils/Navigate';
+import Navigate from './services/Navigate';
 
 import NavScene from './scenes/NavSceneContainer';
-import AppActions from './stores/AppActions';
 
 const styles = StyleSheet.create({
   container: {

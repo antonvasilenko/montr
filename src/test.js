@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { getBuilds } from './actions';
 import configureStore from './configureStore';
 

@@ -7,10 +7,10 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:release": "node_modules/.bin/react-native run-android --variant=release",
     "serve": "node_modules/.bin/react-native run-android",
-    "build": "cd android && ./gradlew assembleRelease"
+    "build": "cd android && ./gradlew assembleRelease",
+    "timesync:win": "adb shell date -s SET $(get-date -format MMddhhmm.ss)"
   },
   "dependencies": {
-    "alt": "^0.18.5",
     "base-64": "^0.1.0",
     "react": "15.3.1",
     "react-native": "0.32.0",

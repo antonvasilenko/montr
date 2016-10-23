@@ -35,18 +35,24 @@ const getPlanIcon = (plan, planMetrics) => {
   return 'good';
 };
 
+const getCountOfIssuesOfType = type => list =>
+  list.reduce((num, pl) => (num + (pl.icon === type ? 1 : 0)), 0) || 0;
+
 class MonitorService {
 
   async getPlansData() {
     const plans = await bamboo.getPlans() || [];
     const sensors = await prtg.getServiceSensors();
-    // console.warn('!!!', JSON.stringify(sensors));
     return plans.map(plan => {
       const metrics = getPlanMetrics(plan, sensors);
       const icon = getPlanIcon(plan, metrics);
       return { ...plan, metrics, icon };
     });
   }
+
+  getErrorsCount = (list) => getCountOfIssuesOfType('error', list);
+  getWarningsCount = (list) => getCountOfIssuesOfType('warning', list);
+
 }
 
 export default new MonitorService();

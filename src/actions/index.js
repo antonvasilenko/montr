@@ -1,13 +1,11 @@
 import monitoringService from '../services/MonitorService';
 import groupBuilds from '../services/group-plans';
 
-import Navigate from '../utils/Navigate';
+import Navigate from '../services/Navigate';
 import routes from '../routes';
 
 import { updateThemeByIssues } from './theme';
 
-const getCountOfIssuesOfType = type => list =>
-  list.reduce((num, pl) => (num + (pl.icon === type ? 1 : 0)), 0) || 0;
 
 const actions = {
   onFetchBuildsStarted: () => ({
@@ -42,8 +40,8 @@ export const getBuilds = () => async dispatch => {
   dispatch(actions.onFetchBuildsStarted());
   try {
     const buildsList = await monitoringService.getPlansData();
-    const errors = getCountOfIssuesOfType('error')(buildsList);
-    const warnings = getCountOfIssuesOfType('warning')(buildsList);
+    const errors = monitoringService.getErrorsCount(buildsList);
+    const warnings = monitoringService.getWarningsCount(buildsList);
     const groups = groupBuilds(buildsList);
     dispatch(actions.onFetchBuildsSucceeded(groups, errors, warnings));
     dispatch(updateThemeByIssues(errors, warnings));
