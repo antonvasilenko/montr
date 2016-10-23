@@ -40,10 +40,18 @@ class AppPage extends Component {
     setDrawer: PropTypes.func,
     loadTheme: PropTypes.func,
     closeDrawer: PropTypes.func,
+    onTimerTicked: PropTypes.func,
   }
 
   componentDidMount() {
     this.props.loadTheme();
+    this.props.onTimerTicked();
+    // this.timer = setInterval(this.props.onTimerTicked, 15000);
+  }
+
+  componentWillUnmount() {
+    if (this.timer) clearInterval(this.timer);
+    this.timer = null;
   }
 
   render() {

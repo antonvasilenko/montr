@@ -50,8 +50,8 @@ class MonitorService {
     });
   }
 
-  getErrorsCount = (list) => getCountOfIssuesOfType('error', list);
-  getWarningsCount = (list) => getCountOfIssuesOfType('warning', list);
+  getErrorsCount = (list) => getCountOfIssuesOfType('error')(list);
+  getWarningsCount = (list) => getCountOfIssuesOfType('warning')(list);
 
 }
 

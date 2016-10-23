@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { openDrawer, navigateTo } from '../actions';
+import { getBuilds, openDrawer, navigateTo } from '../actions';
 import Toolbar from './Toolbar';
 
 const mapStateToProps = state => ({
@@ -12,7 +12,12 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onLeftActionPress: () => dispatch(openDrawer()),
-  onIssuesPress: () => dispatch(navigateTo('services')),
+  // onIssuesPress: () => dispatch(getBuilds()),
+  onIssuesPress: () => {
+    console.log('onIssuesPress');
+    dispatch(getBuilds());
+    dispatch(navigateTo('services'));
+  },
 });
 
 

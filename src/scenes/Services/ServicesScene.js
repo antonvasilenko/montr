@@ -35,7 +35,6 @@ class ServicesScene extends Component {
   static propTypes = {
     buildGroups: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    onTimerTicked: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -45,22 +44,12 @@ class ServicesScene extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.onTimerTicked();
-    // this.timer = setInterval(this.props.onTimerTicked, 15000);
-  }
-
   componentWillReceiveProps(nextProps) {
     if (this.props.buildGroups !== nextProps.buildGroups) {
       this.setState({
         buildsDs: ds.cloneWithRowsAndSections(nextProps.buildGroups),
       });
     }
-  }
-
-  componentWillUnmount() {
-    if (this.timer) clearInterval(this.timer);
-    this.timer = null;
   }
 
   renderSectionHeader(text) {
