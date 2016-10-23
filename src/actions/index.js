@@ -36,7 +36,9 @@ const actions = {
   }),
 };
 
-export const getBuilds = () => async dispatch => {
+export const getBuilds = () => async (dispatch, getState) => {
+  const state = getState();
+  if (state.builds.isFetching) return; // to avoid simultaneous http calls
   dispatch(actions.onFetchBuildsStarted());
   try {
     const buildsList = await monitoringService.getPlansData();

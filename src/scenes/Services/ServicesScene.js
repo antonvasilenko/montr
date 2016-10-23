@@ -22,6 +22,11 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: COLOR.paperBlueGrey50.color,
   },
+  centering: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+  },
   text: TYPO.paperFontBody1,
 });
 
