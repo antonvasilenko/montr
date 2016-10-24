@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   Navigator,
   DrawerLayoutAndroid,
 } from 'react-native';
-import Toolbar from './components/Toolbar';
+import Toolbar from './components/ToolbarContainer';
+import Navigate from './services/Navigate';
 
-import Navigate from './utils/Navigate';
-import NavScene from './scenes/NavScene';
-import AppActions from './stores/AppActions';
+import NavScene from './scenes/NavSceneContainer';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,52 +35,38 @@ const styles = StyleSheet.create({
 
 class AppPage extends Component {
 
-  state = {
-    route: 'services',
+  static propTypes = {
+    setNavigator: PropTypes.func,
+    setDrawer: PropTypes.func,
+    loadTheme: PropTypes.func,
+    closeDrawer: PropTypes.func,
+    onTimerTicked: PropTypes.func,
   }
 
   componentDidMount() {
-    AppActions.loadTheme();
+    this.props.loadTheme();
+    this.props.onTimerTicked();
+    // this.timer = setInterval(this.props.onTimerTicked, 15000);
   }
 
-  onSceneSelected = (name) => {
-    this.setState({ route: name }, () => {
-      this.drawer.closeDrawer();
-      this.navigator.to(name);
-    });
+  componentWillUnmount() {
+    if (this.timer) clearInterval(this.timer);
+    this.timer = null;
   }
-
-  setNavigator = (navi) => {
-    this.navigator = new Navigate(navi);
-  }
-
-  setDrawer = drawer => {
-    this.drawer = drawer;
-  }
-
-  renderHeader = (name) => (<Text>{name}</Text>);
 
   render() {
     return (
       <DrawerLayoutAndroid
         drawerWidth={300}
         drawerPosition={DrawerLayoutAndroid.positions.Left}
-        renderNavigationView={() =>
-          <NavScene
-            onSceneSelected={this.onSceneSelected}
-            route={this.state.route}
-          />
-        }
-        ref={this.setDrawer}
+        renderNavigationView={() => <NavScene />}
+        ref={r => this.props.setDrawer(r)}
       >
         <Navigator
           initialRoute={Navigate.getInitialRoute()}
-          navigationBar={<Toolbar
-            route={this.state.route}
-            onIconPress={() => this.drawer.openDrawer()}
-          />}
+          navigationBar={<Toolbar />}
           configureScene={() => Navigator.SceneConfigs.FadeAndroid}
-          ref={this.setNavigator}
+          ref={r => this.props.setNavigator(r)}
           renderScene={route =>
             <View
               style={styles.scene}

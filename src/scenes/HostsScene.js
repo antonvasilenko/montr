@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, Image } from 'react-native';
-import { Subheader, Icon, Avatar, IconToggle } from 'react-native-material-design';
+import { ScrollView } from 'react-native';
+import { Subheader } from 'react-native-material-design';
 import ListItem from '../components/ListItem';
 
 const data = {
@@ -31,7 +31,7 @@ class ListExample extends Component { // eslint-disable-line
             key={i}
             primaryText={text}
           />
-        ))}        
+        ))}
       </ScrollView>
     );
   }

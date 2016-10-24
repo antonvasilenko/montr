@@ -1,20 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   View,
   ListView,
   Text,
   StyleSheet,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
+  // TouchableHighlight,
+  // TouchableWithoutFeedback,
 } from 'react-native';
 import {
   COLOR, TYPO,
 } from 'react-native-material-design';
 
 import BuildPlanRow from './BuildPlanRow';
-import MonitorService from '../../services/MonitorService';
-import groupBuildPlans from './group-plans';
-import AppStore from '../../stores/AppStore';
 
 const styles = StyleSheet.create({
   divider: {
@@ -25,49 +22,38 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: COLOR.paperBlueGrey50.color,
   },
+  centering: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+  },
   text: TYPO.paperFontBody1,
+});
+
+const ds = new ListView.DataSource({
+  rowHasChanged: (r1, r2) => r1 !== r2,
+  sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
 });
 
 class ServicesScene extends Component {
 
+  static propTypes = {
+    buildGroups: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+  };
+
   constructor(props) {
     super(props);
-    const servicesDs = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2,
-      sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-    });
     this.state = {
-      servicesDs: servicesDs.cloneWithRowsAndSections({ 'no data': [] }),
+      buildsDs: ds.cloneWithRowsAndSections(props.buildGroups),
     };
   }
 
-
-  componentDidMount() {
-    AppStore.listen(this.handleAppStore);
-    this.loadData();
-    this.timer = setInterval(this.loadData, 5000);
-  }
-
-  componentWillUnmount() {
-    AppStore.unlisten(this.handleAppStore);
-    if (this.timer) clearInterval(this.timer);
-    this.timer = null;
-  }
-
-  handleAppStore = (/* store */) => {
-    // maybe handle theme changing somehow
-  }
-
-  loadData = async () => {
-    try {
-      const buildPlans = await MonitorService.getPlansData();
-      if (!this.timer) return;
-      const groupedBuildPlans = groupBuildPlans(buildPlans);
+  componentWillReceiveProps(nextProps) {
+    if (this.props.buildGroups !== nextProps.buildGroups) {
       this.setState({
-        servicesDs: this.state.servicesDs.cloneWithRowsAndSections(groupedBuildPlans),
+        buildsDs: ds.cloneWithRowsAndSections(nextProps.buildGroups),
       });
-    } catch (err) {
-      console.warn(err);
     }
   }
 
@@ -90,7 +76,7 @@ class ServicesScene extends Component {
     return (
       <ListView style={{ backgroundColor: '#fff' }}
         enableEmptySections
-        dataSource={this.state.servicesDs}
+        dataSource={this.state.buildsDs}
         renderRow={rowData =>
           <BuildPlanRow data={rowData} />}
         renderSeparator={(secId, rowId) =>

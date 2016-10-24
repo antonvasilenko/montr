@@ -1,6 +1,6 @@
-import ServicesScene from './scenes/Services/ServicesScene';
+import ServicesScene from './scenes/Services/ServicesContainer';
 import HostsScene from './scenes/HostsScene';
-import ThemesScene from './scenes/ThemesScene';
+import ThemesScene from './scenes/ThemesSceneContainer';
 
 export default {
   services: {
@@ -9,11 +9,11 @@ export default {
     component: ServicesScene,
     icon: 'cloud-queue',
   },
-  /* hosts: {
+  hosts: {
     title: 'Hosts',
     icon: 'computer',
     component: HostsScene,
-  },*/
+  },
   themes: {
     title: 'Themes',
     icon: 'brush',

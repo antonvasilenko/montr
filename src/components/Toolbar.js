@@ -1,91 +1,100 @@
-import React, { Component, PropTypes } from 'react';
-import StatusBarAndroid from 'react-native-android-statusbar';
-import { Toolbar as MaterialToolbar, COLOR } from 'react-native-material-design';
-import AppStore from '../stores/AppStore';
-import routes from '../routes';
+import React, { PropTypes } from 'react';
+import {
+  View,
+} from 'react-native';
+import { Toolbar as MaterialToolbar } from 'react-native-material-design';
+import test from '../test';
 
-export default class Toolbar extends Component {
+const isTest = true;
 
-  static contextTypes = {
-    navigator: PropTypes.object,
+const getButtonIcon = (issues, updating) => {
+  if (updating) return 'refresh';
+  if (!issues) return undefined;
+  if (issues.errors > 0) return 'highlight-off';
+  if (issues.warnings > 0) return 'info-outline';
+  return 'check-circle';
+};
+
+const getButtonBadgeValue = (issues) => {
+  if (!issues) return 0;
+  if (issues.errors > 0) return issues.errors;
+  if (issues.warnings > 0) return issues.warnings;
+  return 0;
+};
+
+const testActions = () => ({
+  icon: 'developer-mode',
+  onPress: () => test(),
+});
+
+const renderIssuesButton = (issues, updating, onIssuesPress) => {
+  if (!issues) {
+    return undefined;
+  }
+  return {
+    icon: getButtonIcon(issues, updating),
+    badge: {
+      // disabled: updating,
+      value: getButtonBadgeValue(issues),
+      animate: false,
+    },
+    onPress: () => onIssuesPress(),
   };
+};
 
-  static propTypes = {
-    onIconPress: PropTypes.func.isRequired,
-    route: PropTypes.string.isRequired,
-    issues: PropTypes.object,
-  };
+const getActionButtons = (issues, updating, onIssuesPress) => {
+  const actions = [];
+  if (isTest) actions.push(testActions());
+  const issuesBtn = renderIssuesButton(issues, updating, onIssuesPress);
+  if (issuesBtn) actions.push(issuesBtn);
+  console.log('asdasd', actions);
+  return actions;
+};
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: AppStore.getState().routeName,
-      theme: AppStore.getState().theme,
-    };
-    this.setStatusBarTheme(this.state.theme);
-  }
+const styles = {
+  toolbar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 56,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+};
 
-  componentDidMount() {
-    AppStore.listen(this.handleAppStore);
-  }
+const Toolbar = ({
+  title,
+  issues,
+  theme,
+  updating,
+  onLeftActionPress,
+  onIssuesPress,
+}, { navigator }) =>
+  <View style={[styles.toolbar]}>
+    <MaterialToolbar
+      title={title}
+      primary={theme}
+      icon={navigator && navigator.isChild ? 'keyboard-backspace' : 'menu'}
+      onIconPress={() =>
+        (navigator && navigator.isChild ? navigator.back() : onLeftActionPress())
+      }
+      actions={getActionButtons(issues, updating, onIssuesPress)}
+      rightIconStyle={{ margin: 10 }}
+    />
+  </View>;
 
-  componentWillUnmount() {
-    AppStore.unlisten(this.handleAppStore);
-  }
+Toolbar.contextTypes = {
+  navigator: PropTypes.object,
+};
 
-  setStatusBarTheme = (theme) => {
-    StatusBarAndroid.setHexColor(COLOR[`${theme}500`].color);
-  }
+Toolbar.propTypes = {
+  title: PropTypes.string,
+  issues: PropTypes.object,
+  theme: PropTypes.string,
+  updating: PropTypes.bool,
+  onLeftActionPress: PropTypes.func,
+  onIssuesPress: PropTypes.func,
+};
 
-  handleAppStore = (store) => {
-    // TODO replace with this.updateState();
-    if (this.state.theme !== store.theme) {
-      this.setStatusBarTheme(store.theme);
-    }
-    this.setState({
-      title: store.routeName,
-      theme: store.theme,
-    });
-  }
-
-
-  issuesAction = () => {
-    if (!this.props.issues || this.props.issues.count === 0) {
-      return undefined;
-    }
-    const icon = this.props.issues.type === 'error' ? 'error' : 'warning';
-    return {
-      icon,
-      badge: { value: this.props.issues.count, anumate: true },
-      onPress: this.context.navigator.to('services'),
-    };
-  }
-
-  renderActions = () => {
-    const actions = [];
-    const issues = this.issuesAction();
-    if (issues) actions.push(issues);
-    return actions;
-  }
-
-  render() {
-    const { navigator } = this.context;
-    const { theme } = this.state;
-    const { onIconPress, route } = this.props;
-
-    const title = routes[route] ? routes[route].title : 'VEVE Montr';
-
-    return (
-      <MaterialToolbar
-        title={title}
-        primary={theme}
-        icon={navigator && navigator.isChild ? 'keyboard-backspace' : 'menu'}
-        onIconPress={() => (navigator && navigator.isChild ? navigator.back() : onIconPress())}
-        actions={this.renderActions()}
-        rightIconStyle={{
-          margin: 10,
-        }}
-      />
-    );
-  }
-}
+export default Toolbar;
