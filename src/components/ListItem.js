@@ -7,13 +7,13 @@ const TYPO = typography;
 const styles = StyleSheet.create({
   listContainer: {
     flexDirection: 'row',
-    paddingLeft: 16,
+    paddingLeft: 12,
     paddingRight: 16,
     height: 48,
     alignItems: 'center',
   },
   leftIcon: {
-    width: 50,
+    width: 40,
     position: 'relative',
     top: 0,
   },
@@ -121,15 +121,15 @@ export default class List extends Component {
           </View>
           {secondaryText &&
             <View>
-              <Text style={[{ height:18 }, lines > 2 && { height: 22 * (lines - 1) -4 }, styles.secondaryText]}>
+              <Text style={[{ height:18 }, styles.secondaryText]}>
                 {secondaryText}
               </Text>
             </View>
           }
           {secondaryTextMoreLine &&
             <View style={[{ height:18 }, lines > 2 && { height: 22 * (lines - 1) - 4 }]}>
-              {secondaryTextMoreLine.map((line) => (
-                <Text style={[styles.secondaryText, { height: 22 }, line.style]}>
+              {secondaryTextMoreLine.map((line, idx) => (
+                <Text key={idx} style={[styles.secondaryText, { height: 22 }, line.style]}>
                   {line.text}
                 </Text>
               ))}

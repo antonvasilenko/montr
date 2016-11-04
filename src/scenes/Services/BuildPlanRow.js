@@ -25,19 +25,31 @@ const renderIcon = item => {
 const renderSummary = item => {
   const parts = [];
   if (item.latestResult) {
-    parts.push(`build - ${item.latestResult.buildNumber}`);
-  }
-  if (item.latestDeployment) {
-    parts.push(`int - ${item.latestDeployment.integration.planResultNumber}`);
-    parts.push(`prod - ${item.latestDeployment.production.planResultNumber}`);
+    parts.push(`build-${item.latestResult.buildNumber}`);
   }
   return parts.join(' ');
 };
 
+const renderDeploymentsData = item => {
+  const parts = [];
+  if (item.latestDeployment) {
+    parts.push(`int-${item.latestDeployment.integration.planResultNumber}  `);
+    parts.push(`prod-${item.latestDeployment.production.planResultNumber}  `);
+    parts.push(`uptime-${item.latestDeployment.uptime.planResultNumber}`);
+  }
+  return parts.join(' ');
+};
+
+const renderDetails = item => ([
+  renderDeploymentsData(item),
+].map(text => ({ text })));
+
 const Plan = ({ data }) =>
   <ListItem
+    lines={2}
     primaryText={data.name}
     secondaryText={renderSummary(data)}
+    secondaryTextMoreLine={renderDetails(data)}
     leftIcon={renderIcon(data)}
   />;
 

@@ -1,14 +1,16 @@
+const isService = (plan) =>
+  /-(service|gateway|worker|processor)/.test(plan.name);
+
 const getCategory = (plan) => {
   if (plan && plan.name) {
-    if (plan.name.indexOf('-service') > 0
-      || plan.name.indexOf('processor') > 0) {
-      return 'Backend';
-    }
-    if (plan.name.indexOf('-app') > 0) {
-      return 'Frontend';
-    }
-    if (plan.name.indexOf('-npm-') > 0) {
+    if (plan.name.indexOf('-npm-') >= 0) {
       return 'Modules';
+    }
+    if (isService(plan)) {
+      return plan.name.indexOf('vc-') >= 0 ? 'VC Backend' : 'VEVE Backend';
+    }
+    if (plan.name.indexOf('-app') >= 0) {
+      return plan.name.indexOf('vc-') >= 0 ? 'VC Frontend' : 'VEVE Frontend';
     }
     if ((/test/i).test(plan.name)) {
       return 'Tests';
@@ -19,8 +21,10 @@ const getCategory = (plan) => {
 
 const groupBuildPlans = (plans) => {
   const plansMap = {
-    Backend: [],
-    Frontend: [],
+    'VC Backend': [],
+    'VEVE Backend': [],
+    'VC Frontend': [],
+    'VEVE Frontend': [],
     Modules: [],
     Tests: [],
     Other: [],
