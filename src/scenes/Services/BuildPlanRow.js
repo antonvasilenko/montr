@@ -1,60 +1,123 @@
-import React, { PropTypes } from 'react';
-import {
-  Icon,
-} from 'react-native-material-design';
-import ListItem from '../../components/ListItem';
+import React, { Component, PropTypes } from 'react';
+import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
+import RowSensor from './RowSensor';
 
-const getIcon = item => {
-  switch (item.icon) {
-    case 'good':
-      return { name: 'cloud-done', color: 'googleGreen500' };
-    case 'warning':
-      return { name: 'cloud-done', color: 'googleYellow500' };
-    case 'error':
-      return { name: 'error', color: 'googleRed500' };
-    default:
-      return { name: 'cloud', color: 'paperBlueGrey300' };
+const styles = StyleSheet.create({
+  listContainer: {
+    flexDirection: 'row',
+    paddingLeft: 0,
+    paddingRight: 8,
+    paddingTop: 0,
+    alignItems: 'flex-start',
+  },
+  leftContainer: {
+    alignSelf: 'center',
+    flexDirection: 'column',
+    marginRight: 8,
+    alignItems: 'center',
+    width: 50,
+    top: 0,
+  },
+  leftIconText: {
+    alignSelf: 'stretch',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    textShadowColor: 'cyan',
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  rightContainer: {
+    flex: 1,
+    alignSelf: 'stretch',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    // backgroundColor: 'magenta',
+  },
+  primaryTextContainer: {
+    flex: 1,
+    paddingRight: 4,
+  },
+  primaryText: {
+    color: 'rgba(0,0,0,.87)',
+    fontSize: 20,
+    fontWeight: '400',
+  },
+  contentContainer: {
+    flex: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // borderWidth: 1,
+    // borderColor: 'black',
+  },
+  contentItem: {
+    marginHorizontal: 1,
+  },
+  noContent: {
+    flex: 2,
+    justifyContent: 'center',
+  },
+});
+
+export default class List extends Component {
+
+  static propTypes = {
+    primaryText: PropTypes.string,
+    leftIcon: PropTypes.element,
+    leftIconText: PropTypes.string,
+    onPress: PropTypes.func,
+    onLeftIconClicked: PropTypes.func,
+    items: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      build: PropTypes.any,
+      deployStatus: PropTypes.string,
+      prtgStatus: PropTypes.string,
+    })),
+  };
+
+  static defaultProps = {
+    items: [],
+  };
+
+  render() {
+    const {
+      primaryText,
+      leftIcon,
+      leftIconText,
+      onLeftIconClicked,
+      items,
+    } = this.props;
+
+    const hasSensors = items && items.length > 0;
+
+    return (
+      <View
+        style={[styles.listContainer, { height: hasSensors ? 72 : 72 }]}
+      >
+        <TouchableWithoutFeedback onPress={onLeftIconClicked}>
+          <View style={styles.leftContainer}>
+            <View>{leftIcon}</View>
+            <Text style={styles.leftIconText}>{leftIconText}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <View style={styles.rightContainer}>
+          <View style={styles.primaryTextContainer}>
+            <Text style={styles.primaryText}>{primaryText}</Text>
+          </View>
+          {hasSensors ?
+            <View style={styles.contentContainer}>
+              {items.map((child, idx) =>
+                <View key={idx} style={styles.contentItem}>
+                  <RowSensor key={idx} {...child} />
+                </View>
+              )}
+            </View>
+            :
+            <View style={styles.noContent}>
+              <Text>no deployment info</Text>
+            </View>
+          }
+        </View>
+      </View>
+    );
   }
-};
-
-const renderIcon = item => {
-  const icon = getIcon(item);
-  return (<Icon name={icon.name} color={icon.color} />);
-};
-
-const renderSummary = item => {
-  const parts = [];
-  if (item.latestResult) {
-    parts.push(`build-${item.latestResult.buildNumber}`);
-  }
-  return parts.join(' ');
-};
-
-const renderDeploymentsData = item => {
-  const parts = [];
-  if (item.latestDeployment) {
-    parts.push(`int-${item.latestDeployment.integration.planResultNumber}  `);
-    parts.push(`prod-${item.latestDeployment.production.planResultNumber}  `);
-    parts.push(`uptime-${item.latestDeployment.uptime.planResultNumber}`);
-  }
-  return parts.join(' ');
-};
-
-const renderDetails = item => ([
-  renderDeploymentsData(item),
-].map(text => ({ text })));
-
-const Plan = ({ data }) =>
-  <ListItem
-    lines={2}
-    primaryText={data.name}
-    secondaryText={renderSummary(data)}
-    secondaryTextMoreLine={renderDetails(data)}
-    leftIcon={renderIcon(data)}
-  />;
-
-Plan.propTypes = {
-  data: PropTypes.object.isRequired,
-};
-
-export default Plan;
+}

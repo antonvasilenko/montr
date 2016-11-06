@@ -11,7 +11,7 @@ import {
   COLOR, TYPO,
 } from 'react-native-material-design';
 
-import BuildPlanRow from './BuildPlanRow';
+import BuildPlanRow from './BuildPlanRowComponent';
 
 const styles = StyleSheet.create({
   divider: {
