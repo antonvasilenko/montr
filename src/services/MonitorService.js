@@ -1,13 +1,14 @@
 import bamboo from './BambooService';
 import prtg from './PrtgService';
 
+// TODO delete me when deployments data gets approved
 const getPlanMetrics = (plan, sensors) => {
   const deployment = plan.latestDeployment || {};
   const integration = deployment.integration || {};
+  const production = deployment.production || {};
 
   const isLastBuildAtIntegration = !integration.planResultNumber
     || integration.planResultNumber === plan.latestResult.buildNumber;
-  const production = deployment.production || {};
   const isLastBuildAtProduction = !production.planResultNumber
     || production.planResultNumber === integration.planResultNumber;
   const integrationSensor = sensors.integration.find(s => s.name === plan.name);
@@ -20,6 +21,39 @@ const getPlanMetrics = (plan, sensors) => {
     isIntegrationAlive,
     isProductionAlive,
   };
+};
+
+const targetsAliases = {
+  integration: 'int',
+  production: 'prod',
+  uptime: 'uptime',
+};
+
+const getDeploymentStatus = (planName, lastBuild, deployment, sensors) => {
+  const serviceSensor = sensors && sensors.find(s => s.name === planName);
+  return {
+    latest: deployment && deployment.planResultNumber === lastBuild,
+    alive: serviceSensor && serviceSensor.up,
+    build: (deployment && deployment.planResultNumber) || undefined,
+  };
+};
+
+const getDeploymentStatuses = (plan, sensors) => {
+  const deployments = [];
+  if (plan && plan.latestDeployment && plan.latestResult) {
+    const lastBuild = plan.latestResult.buildNumber;
+    const latestDeployments = plan.latestDeployment;
+    Object.keys(targetsAliases).forEach(key => {
+      const target = targetsAliases[key];
+      if (latestDeployments[key] && sensors[key]) {
+        deployments.push({
+          name: target,
+          ...getDeploymentStatus(plan.name, lastBuild, latestDeployments[key], sensors[key]),
+        });
+      }
+    });
+  }
+  return deployments;
 };
 
 const getPlanIcon = (plan, planMetrics) => {
@@ -45,8 +79,9 @@ class MonitorService {
     const sensors = await prtg.getServiceSensors();
     return plans.map(plan => {
       const metrics = getPlanMetrics(plan, sensors);
+      const deployments = getDeploymentStatuses(plan, sensors);
       const icon = getPlanIcon(plan, metrics);
-      return { ...plan, metrics, icon };
+      return { ...plan, metrics, deployments, icon };
     });
   }
 
