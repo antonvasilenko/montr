@@ -14,14 +14,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     paddingVertical: 1,
-    paddingHorizontal: 5,
+    paddingHorizontal: 2,
+    marginRight: 2,
 
-    borderRadius: 10,
+    borderRadius: 4,
     borderWidth: 2,
     borderStyle: 'solid',
   },
   buildContainer: {
-    padding: 2,
+    flexDirection: 'row',
+    paddingVertical: 3,
+    marginHorizontal: 3,
   },
   build: {
     fontWeight: '500',
@@ -53,8 +56,8 @@ const mapSensorIcon = status => ({
 
 const RowSensor = ({ name, build, deployStatus, prtgStatus }) =>
   <View style={[styles.rowSensor, { borderColor: mapStatusToColor(deployStatus) }]}>
-    <Text>{name.toUpperCase()}.</Text>
     <View style={[styles.buildContainer]}>
+      <Text>{name}:</Text>
       <Text style={[styles.build]}>{build}</Text>
     </View>
     <Icon size={20} {...mapSensorIcon(prtgStatus)} />
