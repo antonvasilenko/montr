@@ -23,15 +23,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     textShadowColor: 'cyan',
-    borderWidth: 1,
-    borderColor: 'black',
+    // borderWidth: 1,
+    // borderColor: 'black',
   },
   rightContainer: {
     flex: 1,
     alignSelf: 'stretch',
     flexDirection: 'column',
     justifyContent: 'center',
-    // backgroundColor: 'magenta',
   },
   primaryTextContainer: {
     flex: 1,
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class List extends Component {
+export default class BuildPlanRow extends Component {
 
   static propTypes = {
     primaryText: PropTypes.string,
