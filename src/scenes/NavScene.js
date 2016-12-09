@@ -21,8 +21,8 @@ const NavScene = ({ route, sceneSelected }) =>
     <Drawer.Header image={<Image source={require('./../img/dev.jpg')} />}>
       <View style={styles.header}>
         <Avatar size={80} image={
-          <Image source={require('./../img/ch24_mon.png')} />
-        } />
+          <Image source={require('./../img/ch24_mon.png')} />}
+        />
         <Text style={[styles.text, COLOR.paperGrey50, TYPO.paperFontHeadline]}>
           VEVE/VC Monitoring
         </Text>

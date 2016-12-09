@@ -24,6 +24,11 @@
     "global-require": 0,
     "react/jsx-first-prop-new-line": 0,
     "linebreak-style": 0,
-    "react/jsx-filename-extension": [1, { "extensions": [".js"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
+    "arrow-parens": 0,
+    "class-methods-use-this": 0,
+    "comma-dangle": 0,
+    "react/forbid-prop-types": 1,
+    "react/no-unused-prop-types": 1,
   }
 }
