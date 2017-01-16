@@ -1,8 +1,14 @@
 {
   "presets": ["react-native"],
+  "plugins": [
+    [
+      "transform-es2015-modules-commonjs",
+      { "strict": false, "allowTopLevelThis": true }
+    ],
+  ],
   "env": {
     "development": {
       "sourceMaps": "inline"
-    }
+    },
   },
 }
