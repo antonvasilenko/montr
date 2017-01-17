@@ -35,3 +35,4 @@ android/app/build
 /android/build/intermediates/dex-cache/cache.xml
 /android/.idea
 /android/app/my-release-key.keystore
+/remotedev-db.sqlite3
