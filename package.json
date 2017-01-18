@@ -11,6 +11,7 @@
     "timesync:win": "adb shell date -s SET $(get-date -format MMddhhmm.ss)",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",
+    "remotedev:port": "adb reverse tcp:8097 tcp:8097",
     "remotedev:inject": "remotedev --hostname=localhost --port=8000 --injectserver=reactnative",
     "remotedev:revert": "remotedev --revert=reactnative"
   },
@@ -23,6 +24,7 @@
     "react-native-material-design-styles": "^0.2.6",
     "react-redux": "^5.0.0",
     "redux": "^3.6.0",
+    "redux-devtools-extension": "^1.0.0",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",
     "snyk": "^1.24.4"
