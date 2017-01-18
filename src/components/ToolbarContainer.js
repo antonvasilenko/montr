@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 
 import { openDrawer, navigateTo } from '../actions';
+import { getBuilds, getBuildIssues } from '../modules/builds';
 import { fetchBuilds } from '../services/MonitorService';
 import Toolbar from './Toolbar';
 
 const mapStateToProps = state => ({
   title: state.ui.route.title,
-  issues: state.issues,
-  updating: state.builds.isFetching,
+  issues: getBuildIssues(state),
+  updating: getBuilds(state).isFetching,
   theme: state.ui.theme,
 });
 

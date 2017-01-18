@@ -2,10 +2,6 @@ import { combineReducers } from 'redux';
 import builds from './builds';
 
 const initialState = {
-  issues: {
-    errors: 0,
-    warnings: 0,
-  },
   ui: {
     drawer: {
       ref: null,
@@ -17,24 +13,6 @@ const initialState = {
     },
     theme: 'paperTeal',
   },
-};
-
-const issues = (state = initialState.issues, action) => {
-  switch (action.type) {
-    case 'FETCH_BUILDS_SUCCESS': {
-      return {
-        errors: action.errors,
-        warnings: action.warnings,
-      };
-    }
-    case 'FETCH_BUILDS_ERROR':
-      return {
-        errors: 1,
-        warnings: 0,
-      };
-    default:
-      return state;
-  }
 };
 
 // how to transfer command, initiated by toolbar drawer icon click event,
@@ -104,7 +82,6 @@ const theme = (state = initialState.ui.theme, action) => {
 
 export default combineReducers({
   builds,
-  issues,
   ui: combineReducers({
     drawer,
     route,

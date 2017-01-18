@@ -1,28 +1,29 @@
-const FETCH_BUILDS_START = 'BUILDS//FETCH_BUILDS_START';
-const FETCH_BUILDS_SUCCESS = 'BUILDS//FETCH_BUILDS_SUCCESS';
-const FETCH_BUILDS_ERROR = 'BUILDS//FETCH_BUILDS_ERROR';
+const BUILDS_FETCH_START = 'BUILDS_FETCH_START';
+const BUILDS_FETCH_SUCCESS = 'BUILDS_FETCH_SUCCESS';
+const BUILDS_FETCH_ERROR = 'BUILDS_FETCH_ERROR';
 
 const initialState = {
   groups: { 'no data': [] },
+  issues: {
+    errors: 1,
+    warnings: 0,
+  },
   isFetching: false,
 };
 
 const builds = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_BUILDS_START:
+    case BUILDS_FETCH_START:
       return {
         ...state,
         isFetching: true,
       };
-    case FETCH_BUILDS_SUCCESS:
+    case BUILDS_FETCH_SUCCESS:
+    case BUILDS_FETCH_ERROR:
       return {
         ...state,
         groups: action.groups,
-        isFetching: false,
-      };
-    case FETCH_BUILDS_ERROR:
-      return {
-        ...state,
+        issues: action.issues,
         isFetching: false,
       };
     default:
@@ -34,19 +35,24 @@ export default builds;
 
 // ------ selectors -----------------
 export const getBuilds = state => state.builds;
+export const getBuildIssues = state => state.builds.issues;
 
 // ------ action creators -----------
 export const onFetchBuildsStarted = () => ({
-  type: FETCH_BUILDS_START,
+  type: BUILDS_FETCH_START,
 });
 export const onFetchBuildsSucceeded = (groups, errors, warnings) => ({
-  type: FETCH_BUILDS_SUCCESS,
+  type: BUILDS_FETCH_SUCCESS,
   groups,
-  errors,
-  warnings,
+  issues: { errors, warnings }
 });
 
 export const onBuildsFetchFailed = error => ({
-  type: FETCH_BUILDS_ERROR,
+  type: BUILDS_FETCH_ERROR,
+  groups: { 'error occured': [] },
+  issues: {
+    errors: 1,
+    warnings: 0,
+  },
   error,
 });
