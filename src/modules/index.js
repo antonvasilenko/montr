@@ -1,10 +1,7 @@
 import { combineReducers } from 'redux';
+import builds from './builds';
 
 const initialState = {
-  builds: {
-    groups: { 'no data': [] },
-    isFetching: false,
-  },
   issues: {
     errors: 0,
     warnings: 0,
@@ -20,29 +17,6 @@ const initialState = {
     },
     theme: 'paperTeal',
   },
-};
-
-const builds = (state = initialState.builds, action) => {
-  switch (action.type) {
-    case 'FETCH_BUILDS_START':
-      return {
-        ...state,
-        isFetching: true,
-      };
-    case 'FETCH_BUILDS_SUCCESS':
-      return {
-        ...state,
-        groups: action.groups,
-        isFetching: false,
-      };
-    case 'FETCH_BUILDS_ERROR':
-      return {
-        ...state,
-        isFetching: false,
-      };
-    default:
-      return state;
-  }
 };
 
 const issues = (state = initialState.issues, action) => {
@@ -95,7 +69,6 @@ const drawer = (state = initialState.ui.drawer, action) => {
     default: return state;
   }
 };
-
 
 const route = (state = initialState.ui.route, action) => {
   switch (action.type) {

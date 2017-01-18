@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getBuilds, openDrawer, closeDrawer, setDrawer, setNavigator } from './actions';
+import { openDrawer, closeDrawer, setDrawer, setNavigator } from './actions';
+import { fetchBuilds } from './services/MonitorService';
 import { loadTheme } from './actions/theme';
 import AppPage from './AppPage';
 
@@ -12,7 +13,7 @@ const mapDispatchToProps = dispatch =>
     loadTheme,
     openDrawer,
     closeDrawer,
-    onTimerTicked: getBuilds,
+    onTimerTicked: fetchBuilds,
   }, dispatch);
 
 

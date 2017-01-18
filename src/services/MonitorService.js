@@ -1,5 +1,13 @@
 import bamboo from './BambooService';
 import prtg from './PrtgService';
+import groupBuilds from './group-plans';
+import {
+  onFetchBuildsStarted,
+  onFetchBuildsSucceeded,
+  onBuildsFetchFailed,
+  getBuilds,
+} from '../modules/builds';
+import { updateThemeByIssues } from '../actions/theme';
 
 const targetsAliases = {
   integration: 'int',
@@ -48,25 +56,39 @@ const getPlanIcon = (plan, deployments) => {
 const getCountOfIssuesOfType = type => list =>
   list.reduce((num, pl) => (num + (pl.icon === type ? 1 : 0)), 0) || 0;
 
-class MonitorService {
+const getPlansData = () =>
+  Promise.all([bamboo.getPlans(), prtg.getServiceSensors()])
+    .then(([plans, sensors]) =>
+      plans.map(plan => {
+        const deployments = getDeploymentStatuses(plan, sensors);
+        return {
+          lastBuild: plan.latestResult.buildNumber,
+          name: plan.name,
+          icon: getPlanIcon(plan, deployments),
+          deployments,
+        };
+      })
+    )
+    .catch(er => console.log('error during fetching builds and sensors', er));
 
-  async getPlansData() {
-    const plans = await bamboo.getPlans() || [];
-    const sensors = await prtg.getServiceSensors();
-    return plans.map(plan => {
-      const deployments = getDeploymentStatuses(plan, sensors);
-      return {
-        lastBuild: plan.latestResult.buildNumber,
-        name: plan.name,
-        icon: getPlanIcon(plan, deployments),
-        deployments,
-      };
-    });
+export const getErrorsCount = (list) => getCountOfIssuesOfType('error')(list);
+export const getWarningsCount = (list) => getCountOfIssuesOfType('warning')(list);
+
+
+// TODO simplify work with promise (some async redux helper or reactive redux)
+export const fetchBuilds = () => async (dispatch, getState) => {
+  const state = getState();
+  if (getBuilds(state).isFetching) return; // to avoid simultaneous http calls
+  dispatch(onFetchBuildsStarted());
+  try {
+    const buildsList = await getPlansData();
+    const errors = getErrorsCount(buildsList);
+    const warnings = getWarningsCount(buildsList);
+    const groups = groupBuilds(buildsList);
+    dispatch(onFetchBuildsSucceeded(groups, errors, warnings));
+    dispatch(updateThemeByIssues(errors, warnings));
+  } catch (err) {
+    dispatch(onBuildsFetchFailed(err));
   }
+};
 
-  getErrorsCount = (list) => getCountOfIssuesOfType('error')(list);
-  getWarningsCount = (list) => getCountOfIssuesOfType('warning')(list);
-
-}
-
-export default new MonitorService();
