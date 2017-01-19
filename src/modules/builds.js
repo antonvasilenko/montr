@@ -4,10 +4,9 @@ const BUILDS_FETCH_ERROR = 'BUILDS_FETCH_ERROR';
 
 const initialState = {
   groups: { 'no data': [] },
-  issues: {
-    errors: 1,
-    warnings: 0,
-  },
+  list: null,
+  errors: 0,
+  warnings: 0,
   isFetching: false,
 };
 
@@ -23,7 +22,9 @@ const builds = (state = initialState, action) => {
       return {
         ...state,
         groups: action.groups,
-        issues: action.issues,
+        list: action.list,
+        errors: action.errors,
+        warnings: action.warnings,
         isFetching: false,
       };
     default:
@@ -34,25 +35,30 @@ const builds = (state = initialState, action) => {
 export default builds;
 
 // ------ selectors -----------------
-export const getBuilds = state => state.builds;
-export const getBuildIssues = state => state.builds.issues;
+export const getBuildsLoading = state => state.builds.isFetching;
+export const getBuildsGroups = state => state.builds.groups;
+
+export const getBuildIssues = state => ({
+  errors: state.builds.errors,
+  warnings: state.builds.warnings,
+});
 
 // ------ action creators -----------
 export const onFetchBuildsStarted = () => ({
   type: BUILDS_FETCH_START,
 });
-export const onFetchBuildsSucceeded = (groups, errors, warnings) => ({
+export const onFetchBuildsSucceeded = (list, groups, errors, warnings) => ({
   type: BUILDS_FETCH_SUCCESS,
+  list,
   groups,
-  issues: { errors, warnings }
+  errors,
+  warnings,
 });
 
-export const onBuildsFetchFailed = error => ({
+export const onBuildsFetchFailed = () => ({
   type: BUILDS_FETCH_ERROR,
+  list: null,
   groups: { 'error occured': [] },
-  issues: {
-    errors: 1,
-    warnings: 0,
-  },
-  error,
+  errors: 1,
+  warnings: 0,
 });

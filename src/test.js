@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { getBuilds } from './actions';
+import { fetchBuilds } from './services/MonitorService';
 import configureStore from './configureStore';
 
 const test = () => {
@@ -8,7 +8,7 @@ const test = () => {
 
   console.log(store.getState());
 
-  store.dispatch(getBuilds());
+  store.dispatch(fetchBuilds());
   */
 };
 

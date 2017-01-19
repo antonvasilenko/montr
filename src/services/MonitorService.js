@@ -5,7 +5,7 @@ import {
   onFetchBuildsStarted,
   onFetchBuildsSucceeded,
   onBuildsFetchFailed,
-  getBuilds,
+  getBuildsLoading,
 } from '../modules/builds';
 import { updateThemeByIssues } from '../actions/theme';
 
@@ -77,18 +77,18 @@ export const getWarningsCount = (list) => getCountOfIssuesOfType('warning')(list
 
 // TODO simplify work with promise (some async redux helper or reactive redux)
 export const fetchBuilds = () => async (dispatch, getState) => {
-  const state = getState();
-  if (getBuilds(state).isFetching) return; // to avoid simultaneous http calls
+  if (getBuildsLoading(getState())) return; // to avoid simultaneous http calls
   dispatch(onFetchBuildsStarted());
   try {
     const buildsList = await getPlansData();
+    const groups = groupBuilds(buildsList);
     const errors = getErrorsCount(buildsList);
     const warnings = getWarningsCount(buildsList);
-    const groups = groupBuilds(buildsList);
-    dispatch(onFetchBuildsSucceeded(groups, errors, warnings));
+    dispatch(onFetchBuildsSucceeded(buildsList, groups, errors, warnings));
     dispatch(updateThemeByIssues(errors, warnings));
   } catch (err) {
     dispatch(onBuildsFetchFailed(err));
+    dispatch(updateThemeByIssues(1, 0));
   }
 };
 

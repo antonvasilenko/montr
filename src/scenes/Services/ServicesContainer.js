@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
 import ServicesScene from './ServicesScene';
+import { getBuildsGroups, getBuildsLoading } from '../../modules/builds';
 
 const mapStateToProps = state => ({
-  buildGroups: state.builds.groups,
-  isLoading: state.builds.isFetching,
+  buildGroups: getBuildsGroups(state),
+  isLoading: getBuildsLoading(state),
 });
 
 const ServicesContainer = connect(
