@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { openDrawer, closeDrawer, setDrawer, setNavigator } from './actions';
+import { setNavigator } from './modules/route';
+import { setDrawer, openDrawer, closeDrawer } from './modules/drawer';
 import { fetchBuilds } from './services/MonitorService';
 import { loadTheme } from './actions/theme';
 import AppPage from './AppPage';

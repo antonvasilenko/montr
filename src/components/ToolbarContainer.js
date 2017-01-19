@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
-import { openDrawer, navigateTo } from '../actions';
+import { navigateTo } from '../modules/route';
+import { openDrawer } from '../modules/drawer';
 import { getBuildsLoading, getBuildIssues } from '../modules/builds';
 import { fetchBuilds } from '../services/MonitorService';
 import Toolbar from './Toolbar';

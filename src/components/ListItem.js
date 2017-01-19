@@ -71,10 +71,6 @@ export default class List extends Component {
     primaryColor: 'rgba(0,0,0,.87)',
   };
 
-  /* setNativeProps(nativeProps) {
-    this.refRoot.setNativeProps(nativeProps);
-  } */
-
   /* eslint-disable */
   render() {
     const {

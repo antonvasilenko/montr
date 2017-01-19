@@ -85,6 +85,7 @@ export default class Navigate {
   */
   getRouteObject = (path) => {
     let obj = routesTree;
+    console.log(33333333333, path);
     const properties = path.replace(/\./g, '.children.').split('.');
     if (properties.length === 1) return obj[path];
     properties.forEach(key => {

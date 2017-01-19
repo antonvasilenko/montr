@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { sceneSelected } from '../actions';
+import { sceneSelected } from '../modules/route';
 import NavScene from './NavScene';
 
 const mapStateToProps = state => ({
