@@ -36,3 +36,5 @@ android/app/build
 /android/.idea
 /android/app/my-release-key.keystore
 /remotedev-db.sqlite3
+/.vscode/launchReactNative.js
+/.vscode
