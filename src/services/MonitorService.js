@@ -7,7 +7,7 @@ import {
   onBuildsFetchFailed,
   getBuildsLoading,
 } from '../modules/builds';
-import { updateThemeByIssues } from '../actions/theme';
+import { updateThemeByIssues } from '../modules/theme';
 
 const targetsAliases = {
   integration: 'int',

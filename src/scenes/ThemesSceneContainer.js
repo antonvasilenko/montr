@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { updateTheme } from '../actions/theme';
+import { updateTheme, getThemeName } from '../modules/theme';
 import ThemesScene from './ThemesScene';
 
 const mapStateToProps = state => ({
-  theme: state.ui.theme,
+  theme: getThemeName(state),
 });
 
 const mapDispatchToProps = dispatch =>

@@ -35,6 +35,11 @@ const route = (state = initialState, action) => {
 
 export default route;
 
+// ------ selectors -----------------
+const getRoute = state => state.ui.route;
+export const getRouteKey = state => getRoute(state).key;
+export const getRouteTitle = state => getRoute(state).title;
+
 // ------ action creators -----------
 export const setNavigator = (ref) => ({
   type: NAVIGATOR_SET,

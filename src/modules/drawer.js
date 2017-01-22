@@ -42,7 +42,7 @@ export default drawer;
 // ------ selectors -----------------
 const getDrawerRef = state => state.ui.drawer.ref;
 
-// ------------ action creators ----------------
+// ------ action creators -----------
 export const setDrawer = ref => ({
   type: DRAWER_SET,
   ref,

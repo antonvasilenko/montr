@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { setNavigator } from './modules/route';
 import { setDrawer, openDrawer, closeDrawer } from './modules/drawer';
 import { fetchBuilds } from './services/MonitorService';
-import { loadTheme } from './actions/theme';
+import { loadTheme } from './modules/theme';
 import AppPage from './AppPage';
 
 const mapDispatchToProps = dispatch =>

@@ -34,7 +34,6 @@ const renderIssuesButton = (issues, updating, onIssuesPress) => {
   return {
     icon: getButtonIcon(issues, updating),
     badge: {
-      // disabled: updating,
       value: getButtonBadgeValue(issues),
       animate: false,
     },
@@ -47,7 +46,6 @@ const getActionButtons = (issues, updating, onIssuesPress) => {
   if (isTest) actions.push(testActions());
   const issuesBtn = renderIssuesButton(issues, updating, onIssuesPress);
   if (issuesBtn) actions.push(issuesBtn);
-  console.log('asdasd', actions);
   return actions;
 };
 
