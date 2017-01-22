@@ -6,7 +6,8 @@ import {
   DrawerLayoutAndroid,
 } from 'react-native';
 import Toolbar from './components/ToolbarContainer';
-import Navigate from './services/Navigate';
+import { getInitialRoute } from './services/Navigate';
+
 
 import NavScene from './scenes/NavSceneContainer';
 
@@ -39,7 +40,6 @@ class AppPage extends Component {
     setNavigator: PropTypes.func,
     setDrawer: PropTypes.func,
     loadTheme: PropTypes.func,
-    closeDrawer: PropTypes.func,
     onTimerTicked: PropTypes.func,
   }
 
@@ -60,10 +60,10 @@ class AppPage extends Component {
         drawerWidth={300}
         drawerPosition={DrawerLayoutAndroid.positions.Left}
         renderNavigationView={() => <NavScene />}
-        ref={r => this.props.setDrawer(r)}
+        ref={this.props.setDrawer}
       >
         <Navigator
-          initialRoute={Navigate.getInitialRoute()}
+          initialRoute={getInitialRoute()}
           navigationBar={<Toolbar />}
           configureScene={() => Navigator.SceneConfigs.FadeAndroid}
           ref={r => this.props.setNavigator(r)}

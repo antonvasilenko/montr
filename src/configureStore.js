@@ -13,9 +13,9 @@ const configureStore = () => {
     middleware.push(createLogger());
   }
   // https://github.com/jhen0409/react-native-debugger#inpsect-network-requests-by-network-tab-of-chrome-devtools-see-also-15
-  const xhr = global.originalXMLHttpRequest ?
-    global.originalXMLHttpRequest : global.XMLHttpRequest;
-  global.XMLHttpRequest = xhr;
+  // const xhr = global.originalXMLHttpRequest ?
+  //   global.originalXMLHttpRequest : global.XMLHttpRequest;
+  // global.XMLHttpRequest = xhr;
 
   return createStore(
     reducer,

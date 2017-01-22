@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { navigateTo, getRouteTitle } from '../modules/route';
 import { getThemeName } from '../modules/theme';
-import { openDrawer } from '../modules/drawer';
+import drawerService from '../services/DrawerService';
 import { getBuildsLoading, getBuildIssues } from '../modules/builds';
 import { fetchBuilds } from '../services/MonitorService';
 import Toolbar from './Toolbar';
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onLeftActionPress: () => dispatch(openDrawer()),
+  onLeftActionPress: drawerService.openDrawer,
   // onIssuesPress: () => dispatch(fetchBuilds()),
   onIssuesPress: () => {
     console.log('onIssuesPress');

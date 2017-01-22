@@ -1,6 +1,26 @@
 import { BackAndroid } from 'react-native';
 import routesTree from '../routes';
 
+export const getInitialRoute = (path, routes = routesTree) => {
+  if (path) {
+    return {
+      path,
+      ...routes[path],
+    };
+  }
+  let initial;
+  for (const routeKey of Object.keys(routes)) { // eslint-disable-line
+    if (routes[routeKey].initialRoute) {
+      initial = { path: routeKey, ...routes[routeKey] };
+      break;
+    }
+  }
+  return initial || {
+    path,
+    ...routes[Object.keys(routes)[0]],
+  };
+};
+
 export default class Navigate {
 
   /**
@@ -63,12 +83,12 @@ export default class Navigate {
   * @returns {boolean}
   */
   hardwareBackPress = () => {
-    if (this.navigator.getCurrentRoutes()[0].path === Navigate.getInitialRoute().path) {
+    if (this.navigator.getCurrentRoutes()[0].path === getInitialRoute().path) {
       BackAndroid.exitApp();
       return false;
     }
     if (!this.isChild) {
-      const route = Navigate.getInitialRoute();
+      const route = getInitialRoute();
       this.currentRoute = route;
       this.navigator.replace(route);
       return true;

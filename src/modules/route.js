@@ -1,6 +1,6 @@
 import Navigate from '../services/Navigate';
 import routes from '../routes';
-import { closeDrawer } from './drawer';
+import drawerService from '../services/DrawerService';
 
 const NAVIGATOR_SET = 'NAVIGATOR_SET';
 const NAVIGATE = 'NAVIGATE';
@@ -53,7 +53,7 @@ export const navigateTo = (routeName) => ({
   title: routes[routeName] ? routes[routeName].title : 'VEVE Montr',
 });
 
-export const sceneSelected = name => dispatch => {
-  dispatch(closeDrawer());
-  dispatch(navigateTo(name));
+export const sceneSelected = name => {
+  drawerService.closeDrawer();
+  return navigateTo(name);
 };
