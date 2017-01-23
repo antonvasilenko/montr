@@ -10,10 +10,11 @@
     "flow": true
   },
   "extends": "airbnb",
+  "env": {
+    "mocha": true
+  },
   "globals": {
     "fetch": true,
-    "describe": true,
-    "it": true,
     "navigator": true,
     "__DEV__": true,
     "XMLHttpRequest": true,
