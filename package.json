@@ -27,7 +27,7 @@
     "redux-logger": "^3.0.0",
     "redux-devtools-extension": "^2.12.2",
     "redux-thunk": "^2.1.0",
-    "snyk": "^1.24.4"
+    "snyk": "^1.92.1"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
